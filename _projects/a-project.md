@@ -15,6 +15,7 @@ people:
 
 layout: project
 last-updated: 2015-05-05
+no-link: true
 ---
 
 Proin massa augue, eleifend non ultricies eget, feugiat ut nisl. Fusce at
