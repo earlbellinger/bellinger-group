@@ -2,10 +2,14 @@
 earl:
     display_name: "Earl Bellinger"
     role: faculty
+    webpage: "https://earlbellinger.com"
+    github: earlbellinger
+    bio: Group Leader
 
 eb:
     display_name: "Ebraheem Farag"
     role: postdoc
+    bio: YCAA Fellow
 
 pratik:
     display_name: "Pratik Gandhi"
@@ -24,7 +28,7 @@ thiago:
     role: grad
 
 irmak:
-    display_name: "Irmak Akdogan"
+    display_name: "Irmak Akdoğan"
     role: ugrad
 
 andres:

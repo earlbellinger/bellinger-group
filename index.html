@@ -5,29 +5,31 @@ notitle: true
 
 # groups of columns of {roles: list, width: num, image: bool}
 role-tables:
-- - roles: [faculty, postdoc, staff]
-    width: 4
+- - roles: [faculty, postdoc]
+    width: 3
     image: true
-  - roles: [grad]
+  - roles: [grad, ugrad]
     width: 8
     image: true
-- - roles: [collab, ugrad, ugrad-alum]
-    width: 5
-    image: false
-  - roles: [alum]
-    width: 7
-    image: false
+#- - roles: [collab, ugrad-alum, staff]
+#    width: 2
+#    image: false
+#  - roles: [alum]
+#    width: 2
+#    image: false
 
 ---
 
-<div class="jumbotron">
-    <p>
-        Hello world! Welcome to the homepage of the <b>Yale Astro ML (YAML) Group</b> at <b>Yale University</b>!
+<div class="jumbotron" align="center">
+    <p align="center">
+        <!--Hello world! Welcome to the <b>Yale Astro ML (YAML) Group!</b>-->
+        <img src="./img/YAML.png" width="400px" /><br />
+        <h1>The Yale AstroML Research Group</h1>
     </p>
 </div>
 
 <section>
-    <h2>News</h2>
+    <h2># News</h2>
     <ul class="news list-unstyled">
         {% for post in site.posts limit: site.front_page_news %}
             {% include news-item.html item=post %}
@@ -61,7 +63,7 @@ role-tables:
 -->
 
 <div id="people">
-    <h2>People</h2>
+    <h2># People</h2>
     {% for role-table in page.role-tables %}
         <section class="people row justify-content-between">
             {% for role-column in role-table %}

@@ -45,11 +45,26 @@ a > .fa {
 
 /* Jumbotron */
 .jumbotron {
-    text-align: justify;
+    text-align: center;
     padding-top: 1.5em;
     padding-bottom: 0.5em;
     font-size: 125%
 }
+
+/* Default style for larger screens */
+.jumbotron img {
+    width: 400px;  /* Original size */
+    height: auto;  /* Maintain aspect ratio */
+}
+
+/* Media query for screens narrower than 768 pixels */
+@media (max-width: 768px) {
+    .jumbotron img {
+        width: 250px;  /* Smaller size for mobile devices */
+        height: auto;  /* Maintain aspect ratio */
+    }
+}
+
 
 /* Group logo */
 #logo {
@@ -144,4 +159,29 @@ section {
 svg {
     // make the alignment just like img from bootstrap's reboot.scss
     vertical-align: middle;
+}
+
+:root {
+    --selected-bg-color: #0f4d92;  /* Dark blue background for selected item */
+    --selected-text-color: #ffffff;  /* White text for selected item */
+    --link-text-color: #777777;  /* Grey text for links */
+    --hover-text-color: #0f4d92;  /* Slightly lighter blue for hover */
+}
+
+/* Specific path increases specificity */
+body .header .nav-pills .nav-link {
+    color: var(--link-text-color); /* Default link text color */
+    transition: color 0.3s; /* Smooth transition for hover effects */
+}
+
+body .header .nav-pills .nav-link.active,
+body .header .nav-pills .nav-link:focus {
+    background-color: var(--selected-bg-color); /* Background color for selected item */
+    color: var(--selected-text-color); /* Text color for selected item */
+    border: none; /* Remove any default border that might exist */
+}
+
+/* Apply hover effects only to non-active links */
+body .header .nav-pills .nav-link:not(.active):hover {
+    color: var(--hover-text-color); /* Text color on hover */
 }

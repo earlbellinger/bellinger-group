@@ -1,0 +1,147 @@
+---
+---
+
+$yale-blue: #0F4D92;  // Yale Blue
+$dark-gray: #333;     // Dark gray for text and other elements
+$lighter-gray: #555;  // Lighter gray for borders and less emphasized elements
+$background-dark: #121212; // Dark background color
+$accent-color: #D4A017; // Gold color for accents
+
+/* Space out content a bit */
+body {
+    padding-top: 20px;
+    background-color: $background-dark;
+    color: $lighter-gray;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    border-bottom: 1px solid $lighter-gray;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    background-color: $yale-blue;
+    color: white;
+}
+
+.footer {
+    color: $dark-gray;
+    border-top: 1px solid $lighter-gray;
+    text-align: center;
+    font-size: 0.8em;
+    background-color: $yale-blue;
+
+    a:link, a:visited {
+        color: $accent-color;
+    }
+}
+
+.fa {
+    color: $dark-gray;
+}
+a > .fa {
+    display: inline;
+}
+
+.jumbotron {
+    text-align: justify;
+    padding-top: 1.5em;
+    padding-bottom: 0.5em;
+    font-size: 125%;
+    background-color: $yale-blue;
+    color: white;
+}
+
+/* Group logo */
+#logo {
+    width: 154px;
+    height: 35px;
+    margin: 2px 0 8px 0;
+}
+
+ul.news {
+    .date {
+        color: $dark-gray;
+        font-weight: bold;
+    }
+
+    > li {
+        margin-top: 1em;
+        color: $lighter-gray;
+    }
+}
+
+@media (min-width: 576px) {
+    .project-people { column-count: 2 }
+    .card-columns   { column-count: 2 }
+}
+
+@media (min-width: 768px) {
+    .role.grad      { column-count: 2 }
+    .project-people { column-count: 3 }
+    .card-columns   { column-count: 3 }
+}
+
+.title img {
+    max-width: 50%;
+}
+
+section {
+    margin-bottom: 2em;
+}
+
+.profile {
+    object-fit: cover;
+}
+
+.noprofile {
+    circle {
+        fill: $yale-blue;
+    }
+    text {
+        font-weight: 700;
+        fill: white;
+    }
+}
+
+.card {
+    background-color: $yale-blue;
+    color: white;
+
+    .profile {
+        height: 40px;
+        width: 40px;
+        margin: 3px;
+    }
+
+    .card-footer { padding: 0.5em }
+}
+
+.person {
+    margin-bottom: 10px;
+
+    .profile {
+        height: 70px;
+        width: 70px;
+    }
+
+    .bio {
+        color: $lighter-gray;
+    }
+
+    .person-name {
+        margin: 0;
+    }
+}
+
+.person-without-image {
+    margin: 0;
+
+    .bio {
+        margin-left: 1em;
+    }
+}
+
+svg {
+    vertical-align: middle;
+}
