@@ -4,7 +4,8 @@ earl:
     role: faculty
     webpage: "https://earlbellinger.com"
     github: earlbellinger
-    bio: Group Leader
+    bio: Assistant Professor, Group Leader
+    image: /img/people/earl.png
 
 eb:
     display_name: "Ebraheem Farag"
@@ -14,6 +15,7 @@ eb:
 pratik:
     display_name: "Pratik Gandhi"
     role: postdoc
+    bio: Postdoctoral Associate
 
 lynn:
     display_name: "Lynn Buchele"
