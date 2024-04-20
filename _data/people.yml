@@ -36,6 +36,7 @@ irmak:
 andres:
     display_name: "Andres Luengo"
     role: ugrad
+    image: /img/people/andres.jpg
 
 maria:
     display_name: "Maria Korolik"
