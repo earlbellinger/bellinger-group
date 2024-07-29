@@ -17,6 +17,13 @@ pratik:
     role: postdoc
     bio: Postdoctoral Associate
 
+sifan:
+    display_name: "Sifan Wang"
+    role: postdoc
+    bio: FDS Fellow
+    image: /img/people/sifan.png
+    webpage: "https://sifanexisted.github.io"
+
 lynn:
     display_name: "Lynn Buchele"
     role: grad
