@@ -36,6 +36,10 @@ thiago:
     display_name: "Thiago Ferreira Dos Santos"
     role: grad
 
+naomi:
+    display_name: "Naomi Gluck"
+    role: grad
+
 irmak:
     display_name: "Irmak Akdoğan"
     role: ugrad
