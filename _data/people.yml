@@ -26,18 +26,23 @@ sifan:
 
 lynn:
     display_name: "Lynn Buchele"
+    bio: Ph.D. Student, HITS Heidelberg
+    image: /img/people/lynn.jpg
     role: grad
 
 selim:
     display_name: "Selim Kalici"
+    bio: Ph.D. Student, Yale Astronomy
     role: grad
 
 thiago:
     display_name: "Thiago Ferreira Dos Santos"
+    bio: Ph.D. Student, Yale Astronomy
     role: grad
 
 naomi:
     display_name: "Naomi Gluck"
+    bio: Ph.D. Student, Yale Physics
     image: /img/people/naomi.png
     role: grad
     webpage: "https://ngluck.github.io"
