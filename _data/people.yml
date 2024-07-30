@@ -38,7 +38,9 @@ thiago:
 
 naomi:
     display_name: "Naomi Gluck"
+    image: /img/people/naomi.png
     role: grad
+    webpage: "https://ngluck.github.io"
 
 irmak:
     display_name: "Irmak Akdoğan"
