@@ -72,8 +72,10 @@ andres:
 maria:
     display_name: "Maria Korolik"
     role: ugrad
+    image: /img/people/maria.jpg
 
 kj:
     display_name: "KJ McConnell"
     role: ugrad
+    image: /img/people/kj.jpg
 
