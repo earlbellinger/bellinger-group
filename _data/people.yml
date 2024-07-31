@@ -48,6 +48,13 @@ naomi:
     role: grad
     webpage: "https://ngluck.github.io"
 
+chris:
+    display_name: "Christopher Lindsay"
+    bio: Ph.D. Student, Yale Astronomy
+    image: /img/people/chris.jpg
+    role: grad
+    webpage: "https://christopher-lindsay.github.io/"
+
 irmak:
     display_name: "Irmak Akdoğan"
     role: ugrad
