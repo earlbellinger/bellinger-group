@@ -17,6 +17,8 @@ pratik:
     display_name: "Pratik Gandhi"
     role: postdoc
     bio: Postdoctoral Associate
+    image: /img/people/pratik.png
+    webpage: "https://pratikgandhi95.github.io"
 
 sifan:
     display_name: "Sifan Wang"
