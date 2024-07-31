@@ -62,6 +62,7 @@ chris:
 irmak:
     display_name: "Irmak Akdoğan"
     role: ugrad
+    image: /img/people/irmak.jpg
 
 andres:
     display_name: "Andrés Luengo"
