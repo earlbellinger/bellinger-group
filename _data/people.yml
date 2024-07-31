@@ -37,6 +37,7 @@ selim:
     display_name: "Selim Kalici"
     bio: Ph.D. Student, Yale Astronomy
     role: grad
+    image: /img/people/selim.jpeg
 
 thiago:
     display_name: "Thiago Ferreira Dos Santos"
