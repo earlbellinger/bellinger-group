@@ -62,20 +62,24 @@ chris:
 irmak:
     display_name: "Irmak Akdoğan"
     role: ugrad
+    bio: Second Year, Yale Physics
     image: /img/people/irmak.jpg
 
 andres:
     display_name: "Andrés Luengo"
     role: ugrad
+    bio: Second Year, Yale Physics
     image: /img/people/andres.jpg
 
 maria:
     display_name: "Maria Korolik"
     role: ugrad
+    bio: Fourth Year, Yale MechE & Astro
     image: /img/people/maria.jpg
 
 kj:
     display_name: "KJ McConnell"
     role: ugrad
+    bio: Fourth Year, Yale Astronomy
     image: /img/people/kj.jpg
 
