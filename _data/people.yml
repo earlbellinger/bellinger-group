@@ -89,3 +89,9 @@ julia:
     bio: Fourth Year, Yale Astronomy
     image: /img/people/julia.jpg
 
+kyra:
+    display_name: "Kyra Bettwy"
+    role: ugrad
+    bio: Second Year, Yale Astronomy
+    image: /img/people/kyra.jpg
+
