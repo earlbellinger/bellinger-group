@@ -19,6 +19,8 @@ roles:
     name: Researchers
   - key: grad
     name: Graduate Students
+  - key: postgrad
+    name: Postgraduate Students
   - key: ugrad
     name: Undergraduate Students
 #  - key: ugrad-alum

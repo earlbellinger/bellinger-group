@@ -95,3 +95,9 @@ kyra:
     bio: Second Year, Yale Astronomy
     image: /img/people/kyra.png
 
+sofya:
+    display_name: "Sofya Levitina"
+    role: postgrad
+    bio: Postgrad, YAML
+    image: /img/people/sofya.png
+
