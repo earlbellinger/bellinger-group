@@ -16,11 +16,11 @@ roles:
 #  - key: staff
 #    name: Staff
   - key: postdoc
-    name: Researchers
+    name: Postdoctoral Researchers
   - key: grad
     name: Graduate Students
   - key: postgrad
-    name: Postgraduate Students
+    name: Postgraduate Researchers
   - key: ugrad
     name: Undergraduate Students
 #  - key: ugrad-alum
