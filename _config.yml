@@ -21,6 +21,8 @@ roles:
     name: Graduate Students
   - key: postgrad
     name: Postgraduate Researchers
+  - key: postdog
+    name: Postdogs
   - key: ugrad
     name: Undergraduate Students
 #  - key: ugrad-alum

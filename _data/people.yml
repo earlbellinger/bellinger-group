@@ -101,3 +101,8 @@ sofya:
     bio: Postgrad, YAML
     image: /img/people/sofya.png
 
+sofya:
+    display_name: "Atlas"
+    role: postgrad
+    bio: Goodest boy, World
+    image: /img/people/atlas.jpg
