@@ -106,3 +106,22 @@ atlas:
     role: postdog
     bio: Goodest Boy, World
     image: /img/people/atlas.jpg
+
+surendra:
+    display_name: "Surendra Bhattarai"
+    bio: Ph.D. Student, Yale Astronomy
+    image: /img/people/surendra.jpg
+    role: grad
+    webpage: "https://surendra-bhattarai.github.io/"
+
+bhavya:
+    display_name: "Bhavya Pardasani"
+    bio: Ph.D. Student, Yale Astronomy
+    image: /img/people/bhavya.jpg
+    role: grad
+
+andy:
+    display_name: "Andrew Santarelli"
+    bio: Ph.D. Student, Yale Astronomy
+    image: /img/people/andy.jpg
+    role: grad
