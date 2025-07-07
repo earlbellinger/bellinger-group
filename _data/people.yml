@@ -74,19 +74,19 @@ andres:
 maria:
     display_name: "Maria Korolik"
     role: ugrad-alum
-    bio: Fourth Year, Yale MechE & Astro
+    bio: B.Sc., 2025
     image: /img/people/maria.jpg
 
 kj:
     display_name: "KJ McConnell"
     role: ugrad-alum
-    bio: Fourth Year, Yale Astronomy
+    bio: B.Sc., 2025
     image: /img/people/kj.jpg
 
 julia:
     display_name: "Julia Levy"
     role: ugrad-alum
-    bio: Fourth Year, Yale Astronomy
+    bio: B.Sc., 2025
     image: /img/people/julia.jpg
 
 kyra:
@@ -98,7 +98,7 @@ kyra:
 sofya:
     display_name: "Sofya Levitina"
     role: ugrad-alum
-    bio: Postgrad, YAML
+    bio: Former YAML Postgrad
     image: /img/people/sofya.png
 
 atlas:
