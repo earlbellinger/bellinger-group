@@ -29,9 +29,9 @@ sifan:
 
 lynn:
     display_name: "Lynn Buchele"
-    bio: Ph.D. Student, HITS Heidelberg
+    bio: Ph.D., 2025. Now postdoc at ISTA.
     image: /img/people/lynn.jpg
-    role: grad
+    role: alum
 
 selim:
     display_name: "Selim Kalici"
@@ -73,19 +73,19 @@ andres:
 
 maria:
     display_name: "Maria Korolik"
-    role: ugrad
+    role: ugrad-alum
     bio: Fourth Year, Yale MechE & Astro
     image: /img/people/maria.jpg
 
 kj:
     display_name: "KJ McConnell"
-    role: ugrad
+    role: ugrad-alum
     bio: Fourth Year, Yale Astronomy
     image: /img/people/kj.jpg
 
 julia:
     display_name: "Julia Levy"
-    role: ugrad
+    role: ugrad-alum
     bio: Fourth Year, Yale Astronomy
     image: /img/people/julia.jpg
 
@@ -97,7 +97,7 @@ kyra:
 
 sofya:
     display_name: "Sofya Levitina"
-    role: postgrad
+    role: ugrad-alum
     bio: Postgrad, YAML
     image: /img/people/sofya.png
 
