@@ -86,7 +86,7 @@ kj:
 julia:
     display_name: "Julia Levy"
     role: ugrad-alum
-    bio: B.Sc., 2025
+    bio: B.Sc., 2025.
     image: /img/people/julia.jpg
 
 kyra:
@@ -98,7 +98,7 @@ kyra:
 sofya:
     display_name: "Sofya Levitina"
     role: ugrad-alum
-    bio: Former YAML Postgrad
+    bio: Former YAML Postgrad.
     image: /img/people/sofya.png
 
 atlas:
