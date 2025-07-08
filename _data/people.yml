@@ -120,6 +120,13 @@ bhavya:
     role: grad
     image: /img/people/bhavya.png
 
+vincent:
+    display_name: "Vincent Eberle"
+    bio: Ph.D. Student, MPA Garching
+    image: /img/people/vincent.jpg
+    role: grad
+    webpage: "https://wwwmpa.mpa-garching.mpg.de/~veberle/"
+
 andy:
     display_name: "Andrew Santarelli"
     bio: Ph.D. Student, Yale Astronomy
