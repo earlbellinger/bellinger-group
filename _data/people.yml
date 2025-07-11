@@ -131,3 +131,15 @@ andy:
     display_name: "Andrew Santarelli"
     bio: Ph.D. Student, Yale Astronomy
     role: grad
+
+yan:
+    display_name: "Yan Liang"
+    image: /img/people/yan.png
+    role: postdoc
+    bio: 51 Peg b Fellow
+
+nick:
+    display_name: "Nicholas Saunders"
+    image: /img/people/nick.jpg
+    role: postdoc
+    bio: YCAA Fellow
