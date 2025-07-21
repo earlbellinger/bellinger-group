@@ -131,6 +131,7 @@ andy:
     display_name: "Andrew Santarelli"
     bio: Ph.D. Student, Yale Astronomy
     role: grad
+    image: /img/people/andy.jpg
 
 yan:
     display_name: "Yan Liang"
