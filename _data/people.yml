@@ -40,7 +40,7 @@ selim:
     image: /img/people/selim.jpeg
 
 thiago:
-    display_name: "Thiago Ferreira Dos Santos"
+    display_name: "Thiago Ferreira dos Santos"
     bio: Ph.D. Student, Yale Astronomy
     role: grad
     image: /img/people/thiago.png
