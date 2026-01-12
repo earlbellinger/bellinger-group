@@ -41,7 +41,7 @@ selim:
 
 thiago:
     display_name: "Thiago Ferreira dos Santos"
-    bio: Ph.D. Student, Yale Astronomy
+    bio: Ph.D. Candidate, Yale Astronomy
     role: grad
     image: /img/people/thiago.png
 
@@ -54,7 +54,7 @@ naomi:
 
 chris:
     display_name: "Christopher Lindsay"
-    bio: Ph.D. Student, Yale Astronomy
+    bio: Ph.D. Candidate, Yale Astronomy
     image: /img/people/chris.jpg
     role: grad
     webpage: "https://christopher-lindsay.github.io/"
@@ -62,13 +62,13 @@ chris:
 irmak:
     display_name: "Irmak Akdoğan"
     role: ugrad
-    bio: Second Year, Yale Physics
+    bio: Third Year, Yale Physics
     image: /img/people/irmak.jpg
 
 andres:
     display_name: "Andrés Luengo"
     role: ugrad
-    bio: Second Year, Yale Physics
+    bio: Third Year, Yale Physics
     image: /img/people/andres.jpg
 
 maria:
@@ -92,7 +92,7 @@ julia:
 kyra:
     display_name: "Kyra Bettwy"
     role: ugrad
-    bio: Second Year, Yale Astronomy
+    bio: Third Year, Yale Astronomy
     image: /img/people/kyra.png
 
 sofya:
