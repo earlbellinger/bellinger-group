@@ -29,7 +29,7 @@ sifan:
 
 lynn:
     display_name: "Lynn Buchele"
-    bio: Ph.D., 2025. Now a postdoc at ISTA.
+    bio: Ph.D., 2025. Now a postdoc at ISTA
     image: /img/people/lynn.jpg
     role: alum
 
@@ -74,19 +74,19 @@ andres:
 maria:
     display_name: "Maria Korolik"
     role: ugrad-alum
-    bio: B.Sc., 2025. Now at KU Leuven.
+    bio: B.Sc., 2025. Now at KU Leuven
     image: /img/people/maria.jpg
 
 kj:
     display_name: "KJ McConnell"
     role: ugrad-alum
-    bio: B.Sc., 2025. Now at Kirkland & Ellis.
+    bio: B.Sc., 2025. Now at Kirkland & Ellis
     image: /img/people/kj.jpg
 
 julia:
     display_name: "Julia Levy"
     role: ugrad-alum
-    bio: B.Sc., 2025.
+    bio: B.Sc., 2025
     image: /img/people/julia.jpg
 
 kyra:
@@ -98,7 +98,7 @@ kyra:
 sofya:
     display_name: "Sofya Levitina"
     role: ugrad-alum
-    bio: Former YAML postgrad.
+    bio: Former YAML postgrad
     image: /img/people/sofya.png
 
 atlas:
@@ -145,3 +145,9 @@ nick:
     role: postdoc
     bio: YCAA Fellow
     webpage: "https://nksaunders.space/"
+
+connor:
+    display_name: "Connor Jennings"
+    bio: Ph.D. Student, Yale Astronomy
+    role: grad
+    image: /img/people/connor.png
