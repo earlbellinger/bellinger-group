@@ -151,3 +151,10 @@ connor:
     bio: Ph.D. Student, Yale Astronomy
     role: grad
     image: /img/people/connor.png
+
+ramisa:
+    display_name: "Ramisa Rahman"
+    bio: Ph.D. Student, Yale Astronomy
+    role: grad
+    image: /img/people/ramisa.png
+    webpage: "https://ramistarblob.github.io/"
