@@ -13,18 +13,17 @@
         <link rel="stylesheet" href="{{ site.base }}/css/group.css">
         <link rel="icon" type="image/x-icon" href="{{ site.base }}/img/favicon.png" />
     </head>
-    <body>
-        <div class="container">
-            <!-- This is a bit nasty, but it basically says be a column first, and on larger screens be a spaced out row -->
-            <div class="header d-flex
-                        flex-column
-                        flex-md-row justify-content-md-between">
-                <a href="{{ site.base }}/" class="">
+    <body class="{% if page.url == '/' %}page-home{% else %}page-interior{% endif %}">
+        <div class="site-aura site-aura-left"></div>
+        <div class="site-aura site-aura-right"></div>
+        <div class="container site-shell">
+            <header class="header site-header d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between">
+                <a href="{{ site.base }}/" class="brand-link" aria-label="{{ site.name }}">
                     <img src="{{ site.base }}/img/YAML-logo.jpg"
                          srcset="{{ site.base }}/img/YAML-logo.jpg"
                          alt="YAML" id="logo">
                 </a>
-                <ul class="nav nav-pills justify-content-center">
+                <ul class="nav nav-pills justify-content-center site-nav">
 
                     {% assign shorturl = page.url | replace:'.html','' | replace:'index','' %}
                     {% for item in site.navigation %}
@@ -49,8 +48,9 @@
                     {% endfor %}
 
                 </ul>
-            </div>
+            </header>
 
+            <main class="site-main">
             {% if page.image %}
                 <img src="{{ page.image }}"
                      alt="{{ page.title }}"
@@ -63,9 +63,11 @@
             {% endif %}
 
             {{ content }}
+            </main>
 
             <div class="footer">
-                <p>
+                <p class="footer-title">Yale AstroML Research Group</p>
+                <p class="footer-copy">
                     <a href="http://astronomy.yale.edu/">Department of Astronomy</a>
                     at
                     <a href="http://yale.edu/">Yale University</a>

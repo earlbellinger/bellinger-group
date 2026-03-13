@@ -1,7 +1,6 @@
-
-{% assign item = include.item %}
-{% if item.icon %}
-{% assign icon = item.icon %}
+{% assign post = include.item %}
+{% if post.icon %}
+{% assign icon = post.icon %}
 {% assign class = "shortnews" %}
 {% else %}
 {% assign icon = "newspaper-o" %}
@@ -21,11 +20,13 @@
 {% endcapture %}
 
 {% capture header %}
-<span class="fa fa-fw fa-{{ icon }}"></span>
-<span class="date">{{ post.date | date: '%B %d, %Y' }}</span>
+<div class="news-card__meta">
+    <span class="fa fa-fw fa-{{ icon }}"></span>
+    <span class="date">{{ post.date | date: '%B %d, %Y' }}</span>
+</div>
 {% endcapture %}
 
-<li class="{{ class }}">
+<li class="news-card {{ class }}">
     {% if post.image %}
 
         {% capture img %}
@@ -34,12 +35,14 @@
                  src="{{ post.image }}">
         {% endcapture %}
 
-        <div class="row">
-            <div class="col-sm-10">
+        <div class="news-card__surface news-card__surface--with-image">
+            <div class="news-card__body">
                 {{ header }}
-                {{ news }}
+                <div class="news-card__content">
+                    {{ news }}
+                </div>
             </div>
-            <div class="col-sm-2">
+            <div class="news-card__image">
                 {% if post.image_link %}
                     <a href="{{ post.image_link }}">{{ img }}</a>
                 {% else %}
@@ -48,7 +51,11 @@
             </div>
         </div>
      {% else %}
-        {{ header }}
-        {{ news }}
+        <div class="news-card__surface">
+            {{ header }}
+            <div class="news-card__content">
+                {{ news }}
+            </div>
+        </div>
     {% endif %}
 </li>

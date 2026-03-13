@@ -6,29 +6,90 @@ notitle: true
 # groups of columns of {roles: list, width: num, image: bool}
 role-tables:
 - - roles: [faculty, postdoc, postdog]
-    width: 3
+    width: 4
     image: true
   - roles: [grad, ugrad]
     width: 8
     image: true
 - - roles: [ugrad-alum]
-    width: 5
-    image: false
+    width: 6
+    image: true
   - roles: [alum]
     width: 6
-    image: false
+    image: true
 ---
 
-<div class="jumbotron" align="center">
-    <p align="center">
-        <!--Hello world! Welcome to the <b>Yale Astro ML (YAML) Group!</b>-->
-        <img src="./img/YAML.png" width="400px" /><br />
-        <h1>The Yale AstroML Research Group</h1>
-    </p>
-</div>
+<section class="hero-panel">
+    <div class="hero-copy">
+        <p class="eyebrow">Astrophysics x machine learning</p>
+        <h1 class="hero-title">The Yale AstroML Research Group</h1>
+        <p class="hero-lead">
+            We develop physics-driven engines for modeling pulsating stars, stellar populations,
+            and galaxies, connecting machine learning to astrophysical questions
+            ranging from the nature of the first stars to the structure of the Milky Way. 
+        </p>
+        <div class="hero-actions">
+            <a class="btn hero-button hero-button-primary" href="#news">Latest news</a>
+            <a class="btn hero-button hero-button-secondary" href="#people">Meet the group</a>
+        </div>
+        <div class="hero-metrics">
+            <div class="metric-card">
+                <span class="metric-value">{{ site.data.people | size }}</span>
+                <span class="metric-label">researchers and alumni</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">{{ site.posts | size }}</span>
+                <span class="metric-label">news items and posts</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">Yale</span>
+                <span class="metric-label">Astronomy and Physics</span>
+            </div>
+        </div>
+    </div>
 
-<section>
-    <h2># News</h2>
+    <div class="hero-visual">
+        <div class="hero-orbit">
+            <div class="hero-orbit-ring"></div>
+            <img src="./img/YAML.png" alt="YAML logo" class="hero-logo" />
+        </div>
+        <p class="hero-caption">
+            <b>Big observational data confronts big theoretical data:</b><br />
+            We build interpretable machine-learning methods to pair modern inference with astrophysical insight.
+        </p>
+    </div>
+</section>
+
+<section class="spotlight-grid" aria-label="Group highlights">
+    <article class="spotlight-card spotlight-card-primary">
+        <p class="spotlight-label">Population III stars</p>
+        <h2>From surviving primordial stars to heavy black-hole seeds.</h2>
+        <p>
+            Our Population III work spans the lowest-mass survivors still in the Milky Way today,
+            the feedback of evolved and massive Pop III stars on their host galaxies,
+            and supermassive quasi-stars that may seed the earliest supermassive black holes.
+        </p>
+    </article>
+    <article class="spotlight-card">
+        <p class="spotlight-label">The Milky Way and its dwarfs</p>
+        <h2>Measuring galactic history with stars and simulations.</h2>
+        <p>
+            We compare cosmological zoom-in simulations of Milky Way analogs and dwarf galaxies
+            with inferences drawn from pulsating stars in the actual Milky Way.
+        </p>
+    </article>
+</section>
+
+<section id="news" class="section-shell">
+    <div class="section-intro">
+        <div>
+            <p class="section-label">Latest updates</p>
+            <h2>News and milestones</h2>
+        </div>
+        <p class="section-copy">
+            Recent papers, talks, awards, group events, and moments worth celebrating.
+        </p>
+    </div>
     <ul class="news list-unstyled">
         {% for post in site.posts limit: site.front_page_news %}
             {% include news-item.html item=post %}
@@ -36,7 +97,7 @@ role-tables:
     </ul>
     {% assign numposts = site.posts | size %}
     {% if numposts >= 1 %}
-        <p>
+        <p class="section-link">
             <span class="fa fa-fw fa-history"></span>
             <a href="{{ site.base }}/blog.html">Older posts&hellip;</a>
         </p>
@@ -61,14 +122,24 @@ role-tables:
 </section>
 -->
 
-<div id="people">
-    <h2># People</h2>
+<div id="people" class="section-shell">
+    <div class="section-intro">
+        <div>
+            <p class="section-label">Who we are</p>
+            <h2>People</h2>
+        </div>
+        <p class="section-copy">
+            A collaborative group spanning faculty, postdocs, graduate students,
+            undergraduates, and alumni.
+        </p>
+    </div>
     {% for role-table in page.role-tables %}
-        <section class="people row justify-content-between">
+        <section class="people row">
             {% for role-column in role-table %}
                 <div class="col-md-{{ role-column.width }}">
                     {% for role in role-column.roles %}
-                        {% include role-people.html role=role image=role-column.image %}
+                        {% assign show_image = role-column.image %}
+                        {% include role-people.html %}
                     {% endfor %}
                 </div>
             {% endfor %}
