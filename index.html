@@ -42,8 +42,12 @@ role-tables:
                 <span class="metric-label">news items and posts</span>
             </div>
             <div class="metric-card">
+                <span class="metric-value">{% include publication-count.html %}</span>
+                <span class="metric-label">peer-reviewed publications</span>
+            </div>
+            <div class="metric-card">
                 <span class="metric-value">Yale</span>
-                <span class="metric-label">Astronomy and Physics</span>
+                <span class="metric-label">Astronomy, Physics, and Data Science</span>
             </div>
         </div>
     </div>
@@ -146,3 +150,26 @@ role-tables:
         </section>
     {% endfor %}
 </div>
+
+<section id="papers" class="section-shell">
+    <div class="section-intro">
+        <div>
+            <p class="section-label">Recent publications</p>
+            <h2>Papers</h2>
+        </div>
+        <div class="section-copy paper-key" aria-label="Author role key">
+            <span class="paper-key-label">Key:</span>
+            <span class="paper-key-item" data-role="faculty">Faculty</span>
+            <span class="paper-key-item" data-role="postdoc">Postdoc</span>
+            <span class="paper-key-item" data-role="grad">Graduate student</span>
+            <span class="paper-key-item" data-role="ugrad">Undergraduate student</span>
+            <span class="paper-key-item" data-role="ugrad-alum">Past undergraduate student</span>
+            <span class="paper-key-item" data-role="alum">Alumni</span>
+        </div>
+    </div>
+    {% include front-page-papers.html %}
+    <p class="section-link">
+        <span class="fa fa-fw fa-book"></span>
+        <a href="{{ site.base }}/publications.html">All papers&hellip;</a>
+    </p>
+</section>

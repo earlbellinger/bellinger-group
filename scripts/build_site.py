@@ -10,6 +10,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from render_front_page_papers import (
+    render_front_page_papers_include,
+    render_publication_count_include,
+    render_publications_include as render_publications_include_from_bib,
+)
+
 
 ROOT = Path(__file__).resolve().parents[1]
 VENDOR = ROOT / ".codex_vendor"
@@ -166,7 +172,7 @@ def month_parts(value: Any) -> tuple[str, int]:
 
 def clean_bibtex_text(value: Any) -> str:
     text = str(value or "")
-    for old, new in JOURNAL_ALIASES.items():
+    for old, new in sorted(JOURNAL_ALIASES.items(), key=lambda item: len(item[0]), reverse=True):
         text = text.replace(old, new)
     text = re.sub(r"[{}]", "", text)
     text = text.replace(r"~", " ")
@@ -481,7 +487,9 @@ def main() -> int:
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    render_publications_include()
+    render_publications_include_from_bib(ROOT)
+    render_front_page_papers_include(ROOT, int(config.get("front_page_papers", 5)))
+    render_publication_count_include(ROOT)
 
     env = Environment(loader=PreprocessingLoader([ROOT / "_includes"]), autoescape=False)
     env.add_filter("markdownify", markdownify)

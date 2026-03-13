@@ -3,13 +3,21 @@
 
 all: build
 
-BIBBLE = bibble
+PYTHON ?= python3
 
-_includes/pubs.html: bib/pubs.bib bib/publications.tmpl
+_includes/pubs.html: bib/pubs.bib _data/people.yml scripts/render_front_page_papers.py scripts/render_publications_include.py
 	mkdir -p _includes
-	$(BIBBLE) $+ > $@
+	$(PYTHON) scripts/render_publications_include.py
 
-build: _includes/pubs.html
+_includes/publication-count.html: bib/pubs.bib scripts/render_front_page_papers.py
+	mkdir -p _includes
+	$(PYTHON) scripts/render_front_page_papers.py
+
+_includes/front-page-papers.html: bib/pubs.bib _config.yml _data/people.yml scripts/render_front_page_papers.py
+	mkdir -p _includes
+	$(PYTHON) scripts/render_front_page_papers.py
+
+build: _includes/pubs.html _includes/front-page-papers.html _includes/publication-count.html
 	jekyll build
 
 # you can configure these at the shell, e.g.:
@@ -17,11 +25,11 @@ build: _includes/pubs.html
 SERVE_HOST ?= 127.0.0.1
 SERVE_PORT ?= 5000
 
-serve: _includes/pubs.html
+serve: _includes/pubs.html _includes/front-page-papers.html _includes/publication-count.html
 	jekyll serve --port $(SERVE_PORT) --host $(SERVE_HOST)
 
 clean:
-	$(RM) -r _site _includes/pubs.html
+	$(RM) -r _site _includes/pubs.html _includes/front-page-papers.html _includes/publication-count.html
 
 DEPLOY_HOST ?= yourwebpage.com
 DEPLOY_PATH ?= www/
