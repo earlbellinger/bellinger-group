@@ -474,11 +474,10 @@ def venue(entry: BibEntry) -> str:
     return ""
 
 
-def citation_sort_key(entry: BibEntry) -> tuple[int, int, str]:
+def citation_sort_key(entry: BibEntry) -> tuple[int, int]:
     year = int(clean_text(entry.fields.get("year")) or 0)
     month = month_number(entry.fields.get("month"))
-    title = clean_text(entry.fields.get("title"))
-    return (year, month, title)
+    return (year, month)
 
 
 def load_bib_entries(root: Path) -> list[BibEntry]:
