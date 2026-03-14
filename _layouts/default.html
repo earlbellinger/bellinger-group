@@ -81,5 +81,9 @@
                 src="{{ site.base }}/js/srcset-polyfill.js"></script>
         <script type="text/javascript"
                 src="{{ site.base }}/js/publication-search.js"></script>
+        {% if page.name == 'blog.html' or page.url == '/blog.html' %}
+        <script type="text/javascript"
+                src="{{ site.base }}/js/blog-filter.js"></script>
+        {% endif %}
     </body>
 </html>

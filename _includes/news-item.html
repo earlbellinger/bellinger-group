@@ -6,6 +6,39 @@
 {% assign icon = "newspaper-o" %}
 {% endif %}
 
+{% assign post_type_key = post.post_type %}
+{% assign post_type_label = post.post_type_label %}
+{% if post_type_key == nil or post_type_key == "" %}
+    {% case icon %}
+        {% when "file-text-o" %}
+            {% assign post_type_key = "papers" %}
+            {% assign post_type_label = "Papers" %}
+        {% when "trophy" %}
+            {% assign post_type_key = "awards" %}
+            {% assign post_type_label = "Awards" %}
+        {% when "money" %}
+            {% assign post_type_key = "funding" %}
+            {% assign post_type_label = "Funding" %}
+        {% else %}
+            {% assign post_type_key = "news" %}
+            {% assign post_type_label = "Events & News" %}
+    {% endcase %}
+{% endif %}
+{% if post_type_label == nil or post_type_label == "" %}
+    {% case post_type_key %}
+        {% when "papers" %}
+            {% assign post_type_label = "Papers" %}
+        {% when "awards" %}
+            {% assign post_type_label = "Awards" %}
+        {% when "funding" %}
+            {% assign post_type_label = "Funding" %}
+        {% when "news" %}
+            {% assign post_type_label = "Events & News" %}
+        {% else %}
+            {% assign post_type_label = post_type_key | replace: "-", " " | capitalize %}
+    {% endcase %}
+{% endif %}
+
 {% capture news %}
     <div>
         {% if post.shortnews %}
@@ -26,7 +59,9 @@
 </div>
 {% endcapture %}
 
-<li class="news-card {{ class }}">
+<li class="news-card {{ class }}"
+    data-post-type="{{ post_type_key | escape }}"
+    data-post-type-label="{{ post_type_label | escape }}">
     {% if post.image %}
 
         {% capture img %}

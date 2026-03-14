@@ -3,7 +3,13 @@ layout: default
 title: Blog
 ---
 
-<ul class="news list-unstyled">
+<div class="blog-filter-shell" data-blog-filters>
+    <p class="section-label blog-filter-label">Filter By Post Type</p>
+    <div class="blog-filter-toolbar" role="group" aria-label="Filter blog posts by type"></div>
+    <p class="blog-filter-status" aria-live="polite"></p>
+</div>
+
+<ul class="news list-unstyled" data-blog-post-list>
 {% for post in site.posts %}
     {% include news-item.html item=post %}
 {% endfor %}
