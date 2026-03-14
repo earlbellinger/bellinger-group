@@ -676,6 +676,42 @@ ul.news {
     border-bottom: 0;
 }
 
+.funding-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.funding-card {
+    padding: 1.3rem 1.4rem;
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(14px);
+}
+
+.funding-year {
+    margin: 0 0 0.7rem;
+    color: var(--yale);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.funding-person {
+    margin: 0;
+    color: var(--ink);
+    font-weight: 700;
+}
+
+.funding-award {
+    margin: 0.2rem 0 0;
+    color: var(--ink-soft);
+    line-height: 1.55;
+}
+
 .paper-authors,
 .paper-year {
     color: var(--ink);
@@ -937,6 +973,10 @@ a > .fa {
         flex-direction: column;
         align-items: flex-start;
     }
+
+    .funding-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 767.98px) {
@@ -1000,6 +1040,10 @@ a > .fa {
 
     .role {
         padding: 0;
+    }
+
+    .funding-grid {
+        grid-template-columns: 1fr;
     }
 
     .person .profile {

@@ -52,6 +52,8 @@ navigation:
     link: /#news
   - title: People
     link: /#people
+  - title: Funding
+    link: /#funding
   - title: Papers
     link: /#papers
 #  - title: Research
