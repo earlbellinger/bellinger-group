@@ -292,12 +292,16 @@ def load_group_members(path: Path) -> list[GroupMember]:
     return members
 
 
-def normalize_name(text: str) -> str:
+def normalize_search_text(text: str) -> str:
     normalized = unicodedata.normalize("NFKD", clean_text(text))
     normalized = "".join(char for char in normalized if not unicodedata.combining(char))
     normalized = normalized.lower()
     normalized = re.sub(r"[^a-z0-9\s-]", " ", normalized)
     return " ".join(normalized.split())
+
+
+def normalize_name(text: str) -> str:
+    return normalize_search_text(text)
 
 
 def name_tokens(text: str) -> list[str]:
@@ -375,7 +379,19 @@ def render_author(author: str, role_lookup: dict[tuple[str, str], str]) -> str:
 
 
 def render_authors(value: str | None, role_lookup: dict[tuple[str, str], str]) -> str:
-    authors = [render_author(author, role_lookup) for author in re.split(r"\s+and\s+", value or "") if author.strip()]
+    raw_authors = split_authors(value)
+    if len(raw_authors) > 15:
+        first_author = render_author(raw_authors[0], role_lookup)
+        group_authors = [
+            render_author(author, role_lookup)
+            for author in raw_authors[1:]
+            if match_role(author, role_lookup)
+        ]
+        if group_authors:
+            return f"{first_author} et al. including {join_author_list(group_authors)}"
+        return f"{first_author} et al."
+
+    authors = [render_author(author, role_lookup) for author in raw_authors]
     return ", ".join(author for author in authors if author)
 
 
@@ -474,6 +490,24 @@ def venue(entry: BibEntry) -> str:
     return ""
 
 
+def publication_search_text(entry: BibEntry) -> str:
+    parts = [
+        entry.key,
+        entry.entry_type,
+        entry.fields.get("title"),
+        entry.fields.get("author"),
+        entry.fields.get("journal"),
+        entry.fields.get("booktitle"),
+        entry.fields.get("publisher"),
+        entry.fields.get("keywords"),
+        entry.fields.get("note"),
+        entry.fields.get("abstract"),
+        entry.fields.get("year"),
+        month_name(entry.fields.get("month")),
+    ]
+    return normalize_search_text(" ".join(clean_text(part) for part in parts if part))
+
+
 def citation_sort_key(entry: BibEntry) -> tuple[int, int]:
     year = int(clean_text(entry.fields.get("year")) or 0)
     month = month_number(entry.fields.get("month"))
@@ -487,22 +521,9 @@ def load_bib_entries(root: Path) -> list[BibEntry]:
     return entries
 
 
-def is_peer_reviewed(entry: BibEntry) -> bool:
-    key = clean_text(entry.key).lower()
-    if "arxiv" in key:
-        return False
-    for field_name in ("eid", "pages", "journal"):
-        value = clean_text(entry.fields.get(field_name)).lower()
-        if value.startswith("arxiv"):
-            return False
-        if value == "arxiv e-prints":
-            return False
-    return True
-
-
 def render_publication_count_include(root: Path) -> Path:
     output_path = root / "_includes" / "publication-count.html"
-    count = sum(1 for entry in load_bib_entries(root) if is_peer_reviewed(entry))
+    count = len(load_bib_entries(root))
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(f"{count}\n", encoding="utf-8")
     return output_path
@@ -516,14 +537,19 @@ def render_front_page_papers_include(root: Path, limit: int) -> Path:
     role_lookup = build_role_lookup(people_path)
 
     lines: list[str] = ['<ul class="paper-list list-unstyled">']
-    for entry in entries[:limit]:
+    for index, entry in enumerate(entries):
         authors = render_authors(entry.fields.get("author"), role_lookup)
         year = html.escape(clean_text(entry.fields.get("year")))
         title = html.escape(clean_text(entry.fields.get("title")))
         venue_text = html.escape(venue(entry))
+        search_text = html.escape(publication_search_text(entry), quote=True)
         url = ads_url(entry)
         linked_title = f'<a href="{html.escape(url)}">{title}</a>' if url else title
-        lines.append('  <li class="paper-entry">')
+        hidden_attr = ' hidden=""' if index >= limit else ""
+        lines.append(
+            '  '
+            f'<li class="paper-entry" data-publication-entry="" data-search-text="{search_text}"{hidden_attr}>'
+        )
         lines.append(
             '    '
             f'<span class="paper-authors">{authors}</span> '
@@ -552,26 +578,36 @@ def render_publications_include(root: Path) -> Path:
     previous_year = ""
     previous_month_key: tuple[str, str] | None = None
     for entry in entries:
-        year = html.escape(clean_text(entry.fields.get("year")))
-        month = html.escape(month_name(entry.fields.get("month")))
-        month_key = (year, month)
+        year_value = clean_text(entry.fields.get("year"))
+        month_value = month_name(entry.fields.get("month"))
+        year = html.escape(year_value)
+        month = html.escape(month_value)
+        month_key = (year_value, month_value)
         title = html.escape(clean_text(entry.fields.get("title")))
         authors = render_publication_authors(entry.fields.get("author"), role_lookup)
         venue_text = html.escape(venue(entry))
         note = html.escape(clean_text(entry.fields.get("note")))
+        search_text = html.escape(publication_search_text(entry), quote=True)
         url = publication_url(entry)
+        show_year = bool(year_value and year_value != previous_year)
+        show_month = bool(month_value and month_key != previous_month_key)
 
-        lines.append("  <tr>")
-        lines.append("    <td>")
+        lines.append(
+            "  "
+            f'<tr data-publication-entry="" data-search-text="{search_text}" '
+            f'data-year-value="{html.escape(year_value, quote=True)}" '
+            f'data-month-value="{html.escape(month_value, quote=True)}">'
+        )
+        lines.append('    <td class="publication-date">')
         lines.append('      <span class="date">')
-        if year and year != previous_year:
-            lines.append(f"        <big><strong>{year}</strong></big><br />")
-            previous_year = year
-        if month and month_key != previous_month_key:
-            lines.append(f"        {month}")
-            previous_month_key = month_key
-        else:
-            lines.append("        ")
+        lines.append(
+            '        '
+            f'<span class="date-year" data-date-year=""{" hidden" if not show_year else ""}>{year if show_year else ""}</span>'
+        )
+        lines.append(
+            '        '
+            f'<span class="date-month" data-date-month=""{" hidden" if not show_month else ""}>{month if show_month else ""}</span>'
+        )
         lines.append("      </span>")
         lines.append("    </td>")
         lines.append('    <td class="publication">')
@@ -597,6 +633,10 @@ def render_publications_include(root: Path) -> Path:
             lines.append(f'      <br />\n      <span class="links">{rendered_links}</span>')
         lines.append("    </td>")
         lines.append("  </tr>")
+        if year_value:
+            previous_year = year_value
+        if month_value:
+            previous_month_key = month_key
     lines.extend(["</tbody>", "</table>", ""])
 
     output_path.parent.mkdir(parents=True, exist_ok=True)

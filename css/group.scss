@@ -347,6 +347,15 @@ body .header .nav-pills .nav-link:not(.active):hover {
     line-height: 1.45;
 }
 
+.metric-link,
+.metric-link:visited,
+.metric-link:hover,
+.metric-link:focus,
+.metric-link:active {
+    color: inherit;
+    text-decoration: none;
+}
+
 .hero-visual {
     position: relative;
     display: flex;
@@ -536,6 +545,163 @@ body .header .nav-pills .nav-link:not(.active):hover {
     color: var(--role-alum);
 }
 
+.publication-search-shell {
+    display: grid;
+    gap: 1rem;
+}
+
+.publication-search-controls {
+    display: grid;
+    gap: 0.7rem;
+    max-width: 56rem;
+}
+
+.publication-search-label {
+    margin: 0;
+    color: var(--ink);
+    font-weight: 700;
+}
+
+.publication-search-field {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 58px;
+    padding: 0.7rem 0.9rem;
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(14px);
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+.publication-search-field:focus-within {
+    border-color: rgba(0, 53, 107, 0.24);
+    box-shadow: 0 18px 38px rgba(7, 21, 45, 0.12);
+    transform: translateY(-1px);
+}
+
+.publication-search-active-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.publication-search-active-tags:empty {
+    display: none;
+}
+
+.publication-search-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.42rem 0.75rem;
+    color: var(--yale-deep);
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    background: rgba(0, 53, 107, 0.09);
+    border: 1px solid rgba(0, 53, 107, 0.16);
+    border-radius: 14px;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.publication-search-chip:hover,
+.publication-search-chip:focus {
+    color: var(--yale);
+    background: rgba(0, 53, 107, 0.14);
+    border-color: rgba(0, 53, 107, 0.24);
+}
+
+.publication-search-chip-remove {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.publication-search-input {
+    flex: 1 1 220px;
+    min-width: 180px;
+    padding: 0.15rem 0;
+    color: var(--ink);
+    font: inherit;
+    background: transparent;
+    border: 0;
+}
+
+.publication-search-input::placeholder {
+    color: rgba(82, 98, 125, 0.8);
+}
+
+.publication-search-input:focus {
+    outline: none;
+}
+
+.publication-search-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
+.publication-tag-button {
+    padding: 0.42rem 0.8rem;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.publication-tag-button:hover,
+.publication-tag-button:focus {
+    color: var(--yale);
+    border-color: rgba(0, 53, 107, 0.24);
+    transform: translateY(-1px);
+}
+
+.publication-tag-button[aria-pressed="true"] {
+    color: var(--yale-deep);
+    background: rgba(0, 53, 107, 0.08);
+    border-color: rgba(0, 53, 107, 0.24);
+}
+
+.publication-search-status {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+}
+
+.publication-search-empty {
+    margin: 0;
+    padding: 1rem 1.15rem;
+    color: var(--ink-soft);
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+}
+
+.publication-search-results[hidden],
+.publication-search-empty[hidden] {
+    display: none !important;
+}
+
 section {
     margin-bottom: 2rem;
 }
@@ -673,6 +839,19 @@ ul.news {
 }
 
 .paper-entry-empty {
+    border-bottom: 0;
+}
+
+.paper-entry[hidden] {
+    display: none !important;
+}
+
+.paper-entry.is-first-visible {
+    padding-top: 0;
+}
+
+.paper-entry.is-last-visible {
+    padding-bottom: 0;
     border-bottom: 0;
 }
 
@@ -879,9 +1058,43 @@ svg {
     border-top-color: var(--line);
 }
 
+.table tr[hidden] {
+    display: none !important;
+}
+
+.table tr.is-first-visible td {
+    border-top: 0;
+}
+
 .table .date {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
     color: var(--ink-soft);
     font-weight: 700;
+}
+
+.publication-date {
+    width: 7.25rem;
+    white-space: nowrap;
+}
+
+.table .date-year {
+    color: var(--ink-soft);
+    font-size: 1.9rem;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+}
+
+.table .date-month {
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    line-height: 1.2;
+}
+
+.table .date-year[hidden],
+.table .date-month[hidden] {
+    display: none !important;
 }
 
 .publication .pubtitle {
@@ -1018,6 +1231,26 @@ a > .fa {
 
     .hero-orbit {
         width: unquote("min(100%, 340px)");
+    }
+
+    .publication-search-field {
+        padding: 0.65rem 0.8rem;
+    }
+
+    .publication-search-input {
+        min-width: 100%;
+    }
+
+    .publication-date {
+        width: 5.5rem;
+    }
+
+    .table .date-year {
+        font-size: 1.45rem;
+    }
+
+    .table .date-month {
+        font-size: 0.9rem;
     }
 
     .news-card__surface {

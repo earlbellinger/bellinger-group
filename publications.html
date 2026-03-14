@@ -16,4 +16,10 @@ title: Publications
     <span class="paper-key-item" data-role="alum">Alumni</span>
 </div>
 
-{% include pubs.html %}
+<div class="publication-search-shell" data-publication-search>
+    {% include publication-search-controls.html input_id="publications-search" %}
+    <div class="publication-search-results" data-search-results>
+        {% include pubs.html %}
+    </div>
+    <p class="publication-search-empty" data-search-empty hidden>No publications match your search.</p>
+</div>

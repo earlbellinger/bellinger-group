@@ -26,7 +26,7 @@ role-tables:
         <p class="hero-lead">
             We develop physics-driven engines for modeling pulsating stars, stellar populations,
             and galaxies, connecting machine learning to astrophysical questions
-            ranging from the nature of the first stars to the structure of the Milky Way. 
+            ranging from the nature of the first stars and black holes to the structure of the Milky Way. 
         </p>
         <div class="hero-actions">
             <a class="btn hero-button hero-button-primary" href="#news">Latest news</a>
@@ -35,19 +35,23 @@ role-tables:
         <div class="hero-metrics">
             <div class="metric-card">
                 <span class="metric-value">{{ site.data.people | size }}</span>
-                <span class="metric-label">researchers and alumni</span>
+                <span class="metric-label"><a class="metric-link" href="{{ site.base }}/people.html">researchers and alumni</a></span>
             </div>
             <div class="metric-card">
                 <span class="metric-value">{{ site.posts | size }}</span>
-                <span class="metric-label">news items and posts</span>
+                <span class="metric-label"><a class="metric-link" href="{{ site.base }}/blog.html">news items and posts</a></span>
             </div>
             <div class="metric-card">
                 <span class="metric-value">{% include publication-count.html %}</span>
-                <span class="metric-label">peer-reviewed publications</span>
+                <span class="metric-label"><a class="metric-link" href="{{ site.base }}/publications.html">peer-reviewed publications</a></span>
             </div>
             <div class="metric-card">
                 <span class="metric-value">Yale</span>
-                <span class="metric-label">Astronomy, Physics, and Data Science</span>
+                <span class="metric-label">
+                    <a class="metric-link" href="https://astronomy.yale.edu/">Astronomy</a>,
+                    <a class="metric-link" href="https://physics.yale.edu/">Physics</a>, and
+                    <a class="metric-link" href="https://fds.yale.edu/">Data Science</a>
+                </span>
             </div>
         </div>
     </div>
@@ -59,7 +63,7 @@ role-tables:
         </div>
         <p class="hero-caption">
             <b>Big observational data confronts big theoretical data:</b><br />
-            We build interpretable machine-learning methods to pair modern inference with astrophysical insight.
+            interpretable machine-learning methods to pair modern inference with astrophysical insight
         </p>
     </div>
 </section>
@@ -134,7 +138,7 @@ role-tables:
         </div>
         <p class="section-copy">
             A collaborative group spanning faculty, postdocs, graduate students,
-            undergraduates, and alumni.
+            and undergraduates.
         </p>
     </div>
     {% for role-table in page.role-tables %}
@@ -221,7 +225,13 @@ role-tables:
             <span class="paper-key-item" data-role="alum">Alumni</span>
         </div>
     </div>
-    {% include front-page-papers.html %}
+    <div class="publication-search-shell" data-publication-search data-max-results="{{ site.front_page_papers }}">
+        {% include publication-search-controls.html input_id="home-publication-search" %}
+        <div class="publication-search-results" data-search-results>
+            {% include front-page-papers.html %}
+        </div>
+        <p class="publication-search-empty" data-search-empty hidden>No publications match your search.</p>
+    </div>
     <p class="section-link">
         <span class="fa fa-fw fa-book"></span>
         <a href="{{ site.base }}/publications.html">All papers&hellip;</a>

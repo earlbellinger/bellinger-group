@@ -4,3 +4,4 @@ _includes/pubs.html
 .codex_vendor/
 __pycache__/
 *.pyc
+/scripts/__pycache__

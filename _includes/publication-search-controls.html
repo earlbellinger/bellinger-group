@@ -1,0 +1,28 @@
+<div class="publication-search-controls">
+    <label class="publication-search-label" for="{{ include.input_id }}">Search publications</label>
+    <div class="publication-search-field" data-search-field>
+        <div class="publication-search-active-tags" data-search-active-tags></div>
+        <input
+            id="{{ include.input_id }}"
+            class="publication-search-input"
+            type="search"
+            data-search-input
+            placeholder="Search by title, author, journal, or keyword"
+            autocomplete="off"
+            spellcheck="false"
+        />
+    </div>
+    {% assign publication_tags = "asteroseismology|population III|Cepheid|RR Lyrae|red giant|quasi-star|MESA" | split: "|" %}
+    <div class="publication-search-tags" aria-label="Suggested publication tags">
+        {% for tag in publication_tags %}
+            <button
+                type="button"
+                class="publication-tag-button"
+                data-search-tag="{{ tag }}"
+                aria-pressed="false">
+                {{ tag }}
+            </button>
+        {% endfor %}
+    </div>
+    <p class="publication-search-status" data-search-status aria-live="polite"></p>
+</div>
