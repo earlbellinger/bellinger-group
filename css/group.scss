@@ -22,7 +22,9 @@
     --role-postdoc: #2f5d50;
     --role-grad: #7b1e2b;
     --role-ugrad: #8a6112;
-    --role-ugrad-alum: #9c4f2c;
+    --role-alum-postdoc: var(--role-postdoc);
+    --role-alum-grad: var(--role-grad);
+    --role-ugrad-alum: var(--role-ugrad);
     --role-alum: #6e4b7d;
     --shadow-lg: 0 24px 70px rgba(7, 21, 45, 0.14);
     --shadow-md: 0 18px 40px rgba(7, 21, 45, 0.1);
@@ -528,6 +530,16 @@ body .header .nav-pills .nav-link:not(.active):hover {
 .paper-key-item[data-role="grad"],
 .paper-author[data-role="grad"] {
     color: var(--role-grad);
+}
+
+.paper-key-item[data-role="alum-postdoc"],
+.paper-author[data-role="alum-postdoc"] {
+    color: var(--role-alum-postdoc);
+}
+
+.paper-key-item[data-role="alum-grad"],
+.paper-author[data-role="alum-grad"] {
+    color: var(--role-alum-grad);
 }
 
 .paper-key-item[data-role="ugrad"],
@@ -1234,7 +1246,8 @@ a > .fa {
 }
 
 @media (min-width: 768px) {
-    .role.grad {
+    .role.grad,
+    .role.alum-grad {
         column-count: 2;
     }
 

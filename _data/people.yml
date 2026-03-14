@@ -31,7 +31,7 @@ lynn:
     display_name: "Lynn Buchele"
     bio: Ph.D., 2025. Now a postdoc at ISTA
     image: /img/people/lynn.jpg
-    role: alum
+    role: alum-grad
 
 selim:
     display_name: "Selim Kalici"
@@ -98,7 +98,7 @@ kyra:
 sofya:
     display_name: "Sofya Levitina"
     role: ugrad-alum
-    bio: Former YAML postgrad
+    bio: Former YAML postgrad. Now a Research Associate at Longeveron
     image: /img/people/sofya.png
 
 atlas:

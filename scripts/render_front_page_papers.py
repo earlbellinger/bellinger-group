@@ -65,6 +65,12 @@ JOURNAL_ALIASES = {
     r"\araa": "Annual Review of Astronomy and Astrophysics",
 }
 
+PUBLICATION_ROLE_ALIASES = {
+    "ugrad-alum": "ugrad",
+    "alum-grad": "grad",
+    "alum-postdoc": "postdoc",
+}
+
 
 @dataclass
 class BibEntry:
@@ -404,9 +410,15 @@ def match_role(author: str, role_lookup: dict[tuple[str, str], str]) -> str | No
     return None
 
 
+def publication_role(role: str | None) -> str | None:
+    if not role:
+        return None
+    return PUBLICATION_ROLE_ALIASES.get(role, role)
+
+
 def render_author(author: str, role_lookup: dict[tuple[str, str], str]) -> str:
     formatted = html.escape(format_author(author))
-    role = match_role(author, role_lookup)
+    role = publication_role(match_role(author, role_lookup))
     if not role:
         return formatted
     return f'<strong class="paper-author" data-role="{html.escape(role)}">{formatted}</strong>'
@@ -449,7 +461,7 @@ def format_display_author(author: str) -> str:
 
 def render_display_author(author: str, role_lookup: dict[tuple[str, str], str]) -> str:
     formatted = html.escape(format_display_author(author))
-    role = match_role(author, role_lookup)
+    role = publication_role(match_role(author, role_lookup))
     if not role:
         return formatted
     return f'<strong class="paper-author" data-role="{html.escape(role)}">{formatted}</strong>'

@@ -2,6 +2,15 @@
 
 {% for site_role in site.roles %}
     {% if site_role.key == role_key %}
+        {% assign has_people = false %}
+        {% for item in site.data.people %}
+            {% assign person = item[1] %}
+            {% if person.role == site_role.key %}
+                {% assign has_people = true %}
+            {% endif %}
+        {% endfor %}
+
+        {% if has_people %}
         <h3 class="pt-3"> {{ site_role.name }} </h3>
         <div class="role {{ site_role.key }}">
             {% for item in site.data.people %}
@@ -64,5 +73,6 @@
                 {% endif %}
             {% endfor %}
         </div>
+        {% endif %}
     {% endif %}
 {% endfor %}

@@ -22,9 +22,11 @@ roles:
   - key: ugrad
     name: Undergraduate Students
   - key: ugrad-alum
-    name: Past Undergraduate Students
-  - key: alum
-    name: Alumni
+    name: Undergraduate Alumni
+  - key: alum-grad
+    name: Graduate Alumni
+  - key: alum-postdoc
+    name: Postdoctoral Alumni
 #  - key: staff
 #    name: Staff
 #  - key: postgrad
