@@ -45,6 +45,8 @@ Publication List
 
 The list of publications is in `bib/pubs.bib`. Typing `make` will generate `pubs.html`, which contains a pretty, sorted HTML-formatted list of papers. The public page, `publications.html`, also has a link to download the original BibTeX.
 
+The publications search also supports an optional custom `topics` field in `bib/pubs.bib`. These curated topics drive the clickable topic filters on the site separately from the free-text search, and the visible topic buttons are generated automatically from the topics present in the BibTeX file.
+
 
 News Items and Blog Posts
 -------------------------

@@ -668,6 +668,18 @@ body .header .nav-pills .nav-link:not(.active):hover {
         transform 0.2s ease;
 }
 
+.publication-tag-label {
+    display: inline;
+}
+
+.publication-tag-count {
+    margin-left: 0.18rem;
+    color: rgba(82, 98, 125, 0.72);
+    font-size: 0.68em;
+    font-weight: 500;
+    line-height: 1;
+}
+
 .publication-tag-button:hover,
 .publication-tag-button:focus {
     color: var(--yale);

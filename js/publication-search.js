@@ -130,6 +130,20 @@
             });
         }
 
+        function matchesTopics(entry, topicTerms) {
+            if (!topicTerms.length) {
+                return true;
+            }
+
+            var topics = (entry.getAttribute("data-search-topics") || "")
+                .split("|")
+                .map(normalizeText)
+                .filter(Boolean);
+            return topicTerms.every(function (term) {
+                return topics.indexOf(term) !== -1;
+            });
+        }
+
         function statusMessage(visibleCount, matchingCount, hasFilters) {
             if (matchingCount === 0) {
                 return "No matching papers.";
@@ -168,22 +182,15 @@
             var queryTerms = normalizeText(input.value)
                 .split(" ")
                 .filter(Boolean);
-            var tagTerms = [];
-            selectedTags.forEach(function (tag) {
-                normalizeText(tag)
-                    .split(" ")
-                    .filter(Boolean)
-                    .forEach(function (term) {
-                        tagTerms.push(term);
-                    });
-            });
-            var allTerms = queryTerms.concat(tagTerms);
+            var tagTerms = selectedTags
+                .map(normalizeText)
+                .filter(Boolean);
             var matchingEntries = [];
             var visibleEntries = [];
-            var hasFilters = allTerms.length > 0;
+            var hasFilters = queryTerms.length > 0 || tagTerms.length > 0;
 
             entries.forEach(function (entry) {
-                if (matchesEntry(entry, allTerms)) {
+                if (matchesEntry(entry, queryTerms) && matchesTopics(entry, tagTerms)) {
                     matchingEntries.push(entry);
                 }
             });

@@ -300,6 +300,40 @@ def normalize_search_text(text: str) -> str:
     return " ".join(normalized.split())
 
 
+def split_topic_values(value: str | None) -> list[str]:
+    return [part.strip() for part in re.split(r"\s*(?:[|;,])\s*", clean_text(value)) if part.strip()]
+
+
+def publication_topic_items(entry: BibEntry) -> list[tuple[str, str]]:
+    topics: list[tuple[str, str]] = []
+    seen: set[str] = set()
+    for field_name in ("topics", "site_tags"):
+        for topic in split_topic_values(entry.fields.get(field_name)):
+            label = clean_text(topic)
+            normalized = normalize_search_text(label)
+            if normalized and normalized not in seen:
+                seen.add(normalized)
+                topics.append((normalized, label))
+    return topics
+
+
+def publication_topics(entry: BibEntry) -> list[str]:
+    return [normalized for normalized, _ in publication_topic_items(entry)]
+
+
+def publication_topic_summaries(entries: list[BibEntry]) -> list[tuple[str, str, int]]:
+    labels: dict[str, str] = {}
+    counts: dict[str, int] = {}
+    for entry in entries:
+        for normalized, label in publication_topic_items(entry):
+            labels.setdefault(normalized, label)
+            counts[normalized] = counts.get(normalized, 0) + 1
+    return sorted(
+        ((normalized, labels[normalized], counts[normalized]) for normalized in counts if counts[normalized] > 1),
+        key=lambda item: (-item[2], normalize_search_text(item[1]), item[1]),
+    )
+
+
 def normalize_name(text: str) -> str:
     return normalize_search_text(text)
 
@@ -500,12 +534,42 @@ def publication_search_text(entry: BibEntry) -> str:
         entry.fields.get("booktitle"),
         entry.fields.get("publisher"),
         entry.fields.get("keywords"),
+        entry.fields.get("topics"),
+        entry.fields.get("site_tags"),
         entry.fields.get("note"),
         entry.fields.get("abstract"),
         entry.fields.get("year"),
         month_name(entry.fields.get("month")),
     ]
     return normalize_search_text(" ".join(clean_text(part) for part in parts if part))
+
+
+def render_publication_search_tags_include(root: Path, entries: list[BibEntry] | None = None) -> Path:
+    output_path = root / "_includes" / "publication-search-tags.html"
+    entries = entries if entries is not None else load_bib_entries(root)
+    topic_summaries = publication_topic_summaries(entries)
+
+    lines: list[str] = []
+    if topic_summaries:
+        lines.append('<div class="publication-search-tags" aria-label="Publication topics">')
+        for _normalized, label, count in topic_summaries:
+            escaped_label = html.escape(label)
+            escaped_label_attr = html.escape(label, quote=True)
+            paper_word = "paper" if count == 1 else "papers"
+            aria_label = html.escape(f"Filter publications by {label} ({count} {paper_word})", quote=True)
+            lines.append(
+                "  "
+                f'<button type="button" class="publication-tag-button" data-search-tag="{escaped_label_attr}" '
+                f'aria-pressed="false" aria-label="{aria_label}">'
+                f'<span class="publication-tag-label">{escaped_label}</span>'
+                f'<sup class="publication-tag-count" aria-hidden="true">{count}</sup>'
+                "</button>"
+            )
+        lines.append("</div>")
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
+    return output_path
 
 
 def citation_sort_key(entry: BibEntry) -> tuple[int, int]:
@@ -534,6 +598,7 @@ def render_front_page_papers_include(root: Path, limit: int) -> Path:
     output_path = root / "_includes" / "front-page-papers.html"
 
     entries = load_bib_entries(root)
+    render_publication_search_tags_include(root, entries)
     role_lookup = build_role_lookup(people_path)
 
     lines: list[str] = ['<ul class="paper-list list-unstyled">']
@@ -543,12 +608,14 @@ def render_front_page_papers_include(root: Path, limit: int) -> Path:
         title = html.escape(clean_text(entry.fields.get("title")))
         venue_text = html.escape(venue(entry))
         search_text = html.escape(publication_search_text(entry), quote=True)
+        search_topics = html.escape("|".join(publication_topics(entry)), quote=True)
         url = ads_url(entry)
         linked_title = f'<a href="{html.escape(url)}">{title}</a>' if url else title
         hidden_attr = ' hidden=""' if index >= limit else ""
         lines.append(
             '  '
-            f'<li class="paper-entry" data-publication-entry="" data-search-text="{search_text}"{hidden_attr}>'
+            f'<li class="paper-entry" data-publication-entry="" data-search-text="{search_text}" '
+            f'data-search-topics="{search_topics}"{hidden_attr}>'
         )
         lines.append(
             '    '
@@ -572,6 +639,7 @@ def render_publications_include(root: Path) -> Path:
     output_path = root / "_includes" / "pubs.html"
 
     entries = load_bib_entries(root)
+    render_publication_search_tags_include(root, entries)
     role_lookup = build_role_lookup(people_path)
 
     lines: list[str] = ['<table class="table">', "<tbody>"]
@@ -588,6 +656,7 @@ def render_publications_include(root: Path) -> Path:
         venue_text = html.escape(venue(entry))
         note = html.escape(clean_text(entry.fields.get("note")))
         search_text = html.escape(publication_search_text(entry), quote=True)
+        search_topics = html.escape("|".join(publication_topics(entry)), quote=True)
         url = publication_url(entry)
         show_year = bool(year_value and year_value != previous_year)
         show_month = bool(month_value and month_key != previous_month_key)
@@ -595,6 +664,7 @@ def render_publications_include(root: Path) -> Path:
         lines.append(
             "  "
             f'<tr data-publication-entry="" data-search-text="{search_text}" '
+            f'data-search-topics="{search_topics}" '
             f'data-year-value="{html.escape(year_value, quote=True)}" '
             f'data-month-value="{html.escape(month_value, quote=True)}">'
         )
