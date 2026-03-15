@@ -20,8 +20,5 @@
             {% endfor %}
         </section>
     {% endfor %}
-    <p class="section-link">
-        <span class="fa fa-fw fa-users"></span>
-        <a href="#People" data-panel-link="People">See the whole group</a>
-    </p>
+    {% include alumni-panel.html title="Alumni" image=true heading_class="pt-1" %}
 </section>
