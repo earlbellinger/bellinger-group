@@ -1,0 +1,43 @@
+<section{% if include.section_id %} id="{{ include.section_id }}" data-home-anchor-target="{{ include.section_id }}"{% endif %} class="section-shell{% if include.class_name %} {{ include.class_name }}{% endif %}">
+    <div class="section-intro">
+        <div>
+            {% if include.section_label %}
+                <p class="section-label">{{ include.section_label }}</p>
+            {% endif %}
+            <h2{% if include.heading_id %} id="{{ include.heading_id }}"{% endif %}>{{ include.title | default: "News and milestones" }}</h2>
+        </div>
+        <p class="section-copy">
+            {{ include.copy | default: "Recent papers, talks, awards, group events, and moments worth celebrating." }}
+        </p>
+    </div>
+
+    {% if include.show_filter %}
+        <div class="blog-filter-shell" data-blog-filters>
+            <p class="section-label blog-filter-label">Filter By Post Type</p>
+            <div class="blog-filter-toolbar" role="group" aria-label="Filter blog posts by type"></div>
+            <p class="blog-filter-status" aria-live="polite"></p>
+        </div>
+    {% endif %}
+
+    <ul class="news list-unstyled"{% if include.show_filter %} data-blog-post-list{% endif %}>
+        {% if include.max_posts %}
+            {% for post in site.posts limit: include.max_posts %}
+                {% include news-item.html item=post %}
+            {% endfor %}
+        {% else %}
+            {% for post in site.posts %}
+                {% include news-item.html item=post %}
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+    {% if include.show_archive_link %}
+        {% assign numposts = site.posts | size %}
+        {% if numposts > 0 %}
+            <p class="section-link">
+                <span class="fa fa-fw fa-history"></span>
+                <a href="#{{ include.panel_target | default: 'News' }}" data-panel-link="{{ include.panel_target | default: 'News' }}">Open the full news archive</a>
+            </p>
+        {% endif %}
+    {% endif %}
+</section>

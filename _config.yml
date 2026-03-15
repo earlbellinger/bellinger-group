@@ -49,15 +49,20 @@ collections:
 # Navigation bar links.
 navigation:
   - title: Home
-    link: /
+    panel: Home
+    link: /#Home
   - title: News
-    link: /blog.html
+    panel: News
+    link: /#News
   - title: People
-    link: /people.html
+    panel: People
+    link: /#People
   - title: Funding
-    link: /funding.html
+    panel: Funding
+    link: /#Funding
   - title: Papers
-    link: /publications.html
+    panel: Papers
+    link: /#Papers
 #  - title: Research
 #    link: /research.html
 #  - title: Publications

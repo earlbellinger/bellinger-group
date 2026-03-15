@@ -2,29 +2,7 @@
 layout: default
 title: Publications
 notitle: true
+panel: Papers
 ---
 
-<section class="section-shell">
-    <div class="section-intro">
-        <div>
-            <h2>Publications</h2>
-        </div>
-        <div class="section-copy">
-            <div class="paper-key" aria-label="Author role key">
-                <span class="paper-key-label">Key:</span>
-                <span class="paper-key-item" data-role="faculty">Faculty</span>
-                <span class="paper-key-item" data-role="postdoc">Postdoc</span>
-                <span class="paper-key-item" data-role="grad">Graduate student</span>
-                <span class="paper-key-item" data-role="ugrad">Undergraduate student</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="publication-search-shell" data-publication-search>
-        {% include publication-search-controls.html input_id="publications-search" %}
-        <div class="publication-search-results" data-search-results>
-            {% include pubs.html %}
-        </div>
-        <p class="publication-search-empty" data-search-empty hidden>No publications match your search.</p>
-    </div>
-</section>
+{% include publications-expanded-section.html %}

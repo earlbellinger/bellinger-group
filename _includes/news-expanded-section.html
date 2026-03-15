@@ -1,0 +1,22 @@
+<section class="section-shell">
+    <div class="section-intro">
+        <div>
+            <h2>News and milestones</h2>
+        </div>
+        <p class="section-copy">
+            Recent papers, talks, awards, group events, and moments worth celebrating.
+        </p>
+    </div>
+
+    <div class="blog-filter-shell" data-blog-filters>
+        <p class="section-label blog-filter-label">Filter By Post Type</p>
+        <div class="blog-filter-toolbar" role="group" aria-label="Filter blog posts by type"></div>
+        <p class="blog-filter-status" aria-live="polite"></p>
+    </div>
+
+    <ul class="news list-unstyled" data-blog-post-list>
+        {% for post in site.posts %}
+            {% include news-item.html item=post %}
+        {% endfor %}
+    </ul>
+</section>

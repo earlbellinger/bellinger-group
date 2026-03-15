@@ -1,0 +1,23 @@
+<section class="section-shell">
+    <div class="section-intro">
+        <div>
+            <h2>People</h2>
+        </div>
+        <p class="section-copy">
+            An inclusive research group led by Earl Bellinger spanning postdocs, graduate students, and undergraduate researchers.
+        </p>
+    </div>
+    {% for role-table in page.role-tables %}
+        <section class="people row">
+            {% for role-column in role-table %}
+                <div class="col-md-{{ role-column.width }}">
+                    {% for role in role-column.roles %}
+                        {% assign show_image = role-column.image %}
+                        {% include role-people.html %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </section>
+    {% endfor %}
+    {% include alumni-panel.html title="Alumni" image=true %}
+</section>

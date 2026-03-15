@@ -1,0 +1,27 @@
+<section id="people" data-home-anchor-target="people" class="section-shell">
+    <div class="section-intro">
+        <div>
+            <p class="section-label">Who we are</p>
+            <h2>People</h2>
+        </div>
+        <p class="section-copy">
+            An inclusive research group led by Earl Bellinger spanning postdocs, graduate students, and undergraduate researchers.
+        </p>
+    </div>
+    {% for role-table in page.role-tables %}
+        <section class="people row">
+            {% for role-column in role-table %}
+                <div class="col-md-{{ role-column.width }}">
+                    {% for role in role-column.roles %}
+                        {% assign show_image = role-column.image %}
+                        {% include role-people.html %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </section>
+    {% endfor %}
+    <p class="section-link">
+        <span class="fa fa-fw fa-users"></span>
+        <a href="#People" data-panel-link="People">See the whole group</a>
+    </p>
+</section>

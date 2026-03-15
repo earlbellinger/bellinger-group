@@ -2,7 +2,7 @@
     <div class="publication-search-field" data-search-field>
         <div class="publication-search-active-tags" data-search-active-tags></div>
         <input
-            id="{{ include.input_id }}"
+            {% if include.input_id %}id="{{ include.input_id }}"{% endif %}
             class="publication-search-input"
             type="search"
             data-search-input

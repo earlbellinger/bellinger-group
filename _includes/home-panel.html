@@ -1,0 +1,76 @@
+<section class="hero-panel">
+    <div class="hero-copy">
+        <p class="eyebrow">Astrophysics x machine learning</p>
+        <h1 id="home-panel-title" class="hero-title">The Yale AstroML Research Group</h1>
+        <p class="hero-lead">
+            We develop physics-driven engines for modeling pulsating stars, stellar populations,
+            and galaxies, connecting machine learning to astrophysical questions
+            ranging from the nature of the first stars and black holes to the structure of the Milky Way.
+        </p>
+        <div class="hero-actions">
+            <a class="btn hero-button hero-button-primary" href="#news" data-home-anchor="news">Latest news</a>
+            <a class="btn hero-button hero-button-secondary" href="#people" data-home-anchor="people">Meet the group</a>
+        </div>
+        <div class="hero-metrics">
+            <div class="metric-card">
+                <span class="metric-value">{{ site.data.people | size }}</span>
+                <span class="metric-label"><a class="metric-link" href="#people" data-home-anchor="people">researchers and alumni</a></span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">{{ site.posts | size }}</span>
+                <span class="metric-label"><a class="metric-link" href="#news" data-home-anchor="news">news items and posts</a></span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">{% include publication-count.html %}</span>
+                <span class="metric-label"><a class="metric-link" href="#papers" data-home-anchor="papers">peer-reviewed publications</a></span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-value">Yale</span>
+                <span class="metric-label">
+                    <a class="metric-link" href="https://astronomy.yale.edu/">Astronomy</a>,
+                    <a class="metric-link" href="https://physics.yale.edu/">Physics</a>, and
+                    <a class="metric-link" href="https://fds.yale.edu/">Data Science</a>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="hero-orbit">
+            <div class="hero-orbit-ring"></div>
+            <img src="./img/YAML.png" alt="YAML logo" class="hero-logo" />
+        </div>
+        <p class="hero-caption">
+            <b>Big observational data confronts big theoretical data:</b><br />
+            interpretable machine-learning methods to pair modern inference with astrophysical insight
+        </p>
+    </div>
+</section>
+
+<section class="spotlight-grid" aria-label="Group highlights">
+    <article class="spotlight-card spotlight-card-primary">
+        <p class="spotlight-label">Population III stars</p>
+        <h2>From surviving primordial stars to heavy black-hole seeds.</h2>
+        <p>
+            Our Population III work spans the lowest-mass survivors still in the Milky Way today,
+            the feedback of evolved and massive Pop III stars on their host galaxies,
+            and supermassive quasi-stars that may seed the earliest supermassive black holes.
+        </p>
+    </article>
+    <article class="spotlight-card">
+        <p class="spotlight-label">The Milky Way and its dwarfs</p>
+        <h2>(Extra-)galactic archaeology with stellar pulsations.</h2>
+        <p>
+            We confront galaxy simulations with inferences from pulsating stars
+            to understand the formation and evolution of the Milky Way and its satellites.
+        </p>
+    </article>
+</section>
+
+{% include news-preview-section.html %}
+
+{% include people-home-section.html %}
+
+{% include funding-home-section.html %}
+
+{% include publications-preview-section.html %}

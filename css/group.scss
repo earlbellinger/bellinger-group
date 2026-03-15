@@ -102,6 +102,31 @@ body::before {
     position: relative;
 }
 
+.page-panel-root {
+    position: relative;
+}
+
+.page-panel {
+    outline: none;
+    animation: panel-enter 0.28s ease;
+}
+
+.page-panel[hidden] {
+    display: none !important;
+}
+
+@keyframes panel-enter {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 a {
     color: var(--yale);
     text-decoration-thickness: 0.08em;
@@ -473,6 +498,10 @@ body .header .nav-pills .nav-link:not(.active):hover {
     margin-bottom: 2.8rem;
 }
 
+.page-panel > :last-child {
+    margin-bottom: 0;
+}
+
 .section-intro {
     display: flex;
     align-items: flex-end;
@@ -492,6 +521,60 @@ body .header .nav-pills .nav-link:not(.active):hover {
     margin: 0;
     color: var(--ink-soft);
     line-height: 1.7;
+}
+
+.panel-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.panel-overview-card {
+    display: block;
+    padding: 1.4rem 1.45rem;
+    color: inherit;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.78);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease,
+        background-color 0.22s ease;
+}
+
+.panel-overview-card:hover,
+.panel-overview-card:focus {
+    color: inherit;
+    text-decoration: none;
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 53, 107, 0.18);
+    box-shadow: 0 18px 34px rgba(7, 21, 45, 0.12);
+    outline: none;
+}
+
+.panel-overview-kicker {
+    margin: 0 0 0.7rem;
+    color: var(--yale);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.panel-overview-card h3 {
+    margin: 0 0 0.6rem;
+    color: var(--ink);
+    font-size: 1.22rem;
+    line-height: 1.25;
+}
+
+.panel-overview-card p:last-child {
+    color: var(--ink-soft);
+    line-height: 1.6;
 }
 
 .paper-key {
@@ -1287,6 +1370,11 @@ a > .fa {
     .funding-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .panel-overview-grid {
+        grid-template-columns: 1fr;
+    }
+
 }
 
 @media (max-width: 767.98px) {

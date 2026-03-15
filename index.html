@@ -2,6 +2,7 @@
 layout: default
 title: Home
 notitle: true
+panel: Home
 
 # groups of columns of {roles: list, width: num, image: bool}
 role-tables:
@@ -13,220 +14,24 @@ role-tables:
     image: true
 ---
 
-<section class="hero-panel">
-    <div class="hero-copy">
-        <p class="eyebrow">Astrophysics x machine learning</p>
-        <h1 class="hero-title">The Yale AstroML Research Group</h1>
-        <p class="hero-lead">
-            We develop physics-driven engines for modeling pulsating stars, stellar populations,
-            and galaxies, connecting machine learning to astrophysical questions
-            ranging from the nature of the first stars and black holes to the structure of the Milky Way. 
-        </p>
-        <div class="hero-actions">
-            <a class="btn hero-button hero-button-primary" href="#news">Latest news</a>
-            <a class="btn hero-button hero-button-secondary" href="#people">Meet the group</a>
-        </div>
-        <div class="hero-metrics">
-            <div class="metric-card">
-                <span class="metric-value">{{ site.data.people | size }}</span>
-                <span class="metric-label"><a class="metric-link" href="{{ site.base }}/people.html">researchers and alumni</a></span>
-            </div>
-            <div class="metric-card">
-                <span class="metric-value">{{ site.posts | size }}</span>
-                <span class="metric-label"><a class="metric-link" href="{{ site.base }}/blog.html">news items and posts</a></span>
-            </div>
-            <div class="metric-card">
-                <span class="metric-value">{% include publication-count.html %}</span>
-                <span class="metric-label"><a class="metric-link" href="{{ site.base }}/publications.html">peer-reviewed publications</a></span>
-            </div>
-            <div class="metric-card">
-                <span class="metric-value">Yale</span>
-                <span class="metric-label">
-                    <a class="metric-link" href="https://astronomy.yale.edu/">Astronomy</a>,
-                    <a class="metric-link" href="https://physics.yale.edu/">Physics</a>, and
-                    <a class="metric-link" href="https://fds.yale.edu/">Data Science</a>
-                </span>
-            </div>
-        </div>
-    </div>
+<div class="page-panel-root" data-panel-root data-default-panel="Home">
+    <section id="Home" class="page-panel" data-page-panel="Home" data-panel-label="Home" tabindex="-1">
+        {% include home-panel.html %}
+    </section>
 
-    <div class="hero-visual">
-        <div class="hero-orbit">
-            <div class="hero-orbit-ring"></div>
-            <img src="./img/YAML.png" alt="YAML logo" class="hero-logo" />
-        </div>
-        <p class="hero-caption">
-            <b>Big observational data confronts big theoretical data:</b><br />
-            interpretable machine-learning methods to pair modern inference with astrophysical insight
-        </p>
-    </div>
-</section>
+    <section id="News" class="page-panel" data-page-panel="News" data-panel-label="News" tabindex="-1" hidden>
+        {% include news-expanded-section.html %}
+    </section>
 
-<section class="spotlight-grid" aria-label="Group highlights">
-    <article class="spotlight-card spotlight-card-primary">
-        <p class="spotlight-label">Population III stars</p>
-        <h2>From surviving primordial stars to heavy black-hole seeds.</h2>
-        <p>
-            Our Population III work spans the lowest-mass survivors still in the Milky Way today,
-            the feedback of evolved and massive Pop III stars on their host galaxies,
-            and supermassive quasi-stars that may seed the earliest supermassive black holes.
-        </p>
-    </article>
-    <article class="spotlight-card">
-        <p class="spotlight-label">The Milky Way and its dwarfs</p>
-        <h2>(Extra-)galactic archaeology with stellar pulsations.</h2>
-        <p>
-            We confront galaxy simulations with inferences from pulsating stars 
-            to understand the formation and evolution of the Milky Way and its satellites. 
-        </p>
-    </article>
-</section>
+    <section id="People" class="page-panel" data-page-panel="People" data-panel-label="People" tabindex="-1" hidden>
+        {% include people-expanded-section.html %}
+    </section>
 
-<section id="news" class="section-shell">
-    <div class="section-intro">
-        <div>
-            <p class="section-label">Latest updates</p>
-            <h2>News and milestones</h2>
-        </div>
-        <p class="section-copy">
-            Recent papers, talks, awards, group events, and moments worth celebrating.
-        </p>
-    </div>
-    <ul class="news list-unstyled">
-        {% for post in site.posts limit: site.front_page_news %}
-            {% include news-item.html item=post %}
-        {% endfor %}
-    </ul>
-    {% assign numposts = site.posts | size %}
-    {% if numposts >= 1 %}
-        <p class="section-link">
-            <span class="fa fa-fw fa-history"></span>
-            <a href="{{ site.base }}/blog.html">Older posts&hellip;</a>
-        </p>
-    {% endif %}
-</section>
+    <section id="Funding" class="page-panel" data-page-panel="Funding" data-panel-label="Funding" tabindex="-1" hidden>
+        {% include funding-expanded-section.html %}
+    </section>
 
-<!--
-<section>
-    <h2>Research</h2>
-    <div class="card-columns">
-        {% comment %}
-        Sort the projects by date, putting those without dates last
-        {% endcomment %}
-        {% assign projects_by_date = site.projects | sort: 'last-updated', 'first' %}
-        {% assign projects_by_date = projects_by_date | reverse %}
-        {% for p in projects_by_date %}
-            {% if p.status != "inactive" %}
-                {% include project-card.html project=p %}
-            {% endif %}
-        {% endfor %}
-    </div>
-</section>
--->
-
-<div id="people" class="section-shell">
-    <div class="section-intro">
-        <div>
-            <p class="section-label">Who we are</p>
-            <h2>People</h2>
-        </div>
-        <p class="section-copy">
-            An inclusive research group led by Earl Bellinger spanning postdocs, graduate students,
-            and undergraduate researchers.
-        </p>
-    </div>
-    {% for role-table in page.role-tables %}
-        <section class="people row">
-            {% for role-column in role-table %}
-                <div class="col-md-{{ role-column.width }}">
-                    {% for role in role-column.roles %}
-                        {% assign show_image = role-column.image %}
-                        {% include role-people.html %}
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </section>
-    {% endfor %}
-    {% include alumni-panel.html title="Alumni" image=true %}
+    <section id="Papers" class="page-panel" data-page-panel="Papers" data-panel-label="Papers" tabindex="-1" hidden>
+        {% include publications-expanded-section.html %}
+    </section>
 </div>
-
-<section id="funding" class="section-shell">
-    <div class="section-intro">
-        <div>
-            <p class="section-label">Research Support</p>
-            <h2>Awards &amp; Funding</h2>
-        </div>
-        <p class="section-copy">
-            Fellowships, grants, awards, and research support across the YAML group.
-        </p>
-    </div>
-    <div class="funding-grid">
-        <article class="funding-card">
-            <p class="funding-year">2025</p>
-            <p class="funding-person">Naomi Gluck</p>
-            <p class="funding-award">D. Allan Bromley Fellowship</p>
-        </article>
-        <article class="funding-card">
-            <p class="funding-year">2025</p>
-            <p class="funding-person">Kyra Bettwy</p>
-            <p class="funding-award">Rosenfeld Science Scholar Fellowship</p>
-        </article>
-        <article class="funding-card">
-            <p class="funding-year">2025</p>
-            <p class="funding-person">Earl Bellinger</p>
-            <p class="funding-award">Yale AI Seed Grant ($88,000)</p>
-        </article>
-        <article class="funding-card">
-            <p class="funding-year">2024</p>
-            <p class="funding-person">Andrés Luengo</p>
-            <p class="funding-award">Yale College First-Year Summer Research Fellowship</p>
-        </article>
-        <article class="funding-card">
-            <p class="funding-year">2024</p>
-            <p class="funding-person">KJ McConnell</p>
-            <p class="funding-award">Yale Dean's Research Fellowship</p>
-        </article>
-        <article class="funding-card">
-            <p class="funding-year">2024</p>
-            <p class="funding-person">Yan Liang</p>
-            <p class="funding-award">51 Peg b Fellowship</p>
-        </article>
-        <article class="funding-card">
-            <p class="funding-year">2024</p>
-            <p class="funding-person">Nicholas Saunders</p>
-            <p class="funding-award">YCAA Fellowship</p>
-        </article>
-        <article class="funding-card">
-            <p class="funding-year">2024</p>
-            <p class="funding-person">Earl Bellinger</p>
-            <p class="funding-award">DOE FOA ($40,000)</p>
-        </article>
-    </div>
-</section>
-
-<section id="papers" class="section-shell">
-    <div class="section-intro">
-        <div>
-            <p class="section-label">Recent publications</p>
-            <h2>Papers</h2>
-        </div>
-        <div class="section-copy paper-key" aria-label="Author role key">
-            <span class="paper-key-label">Key:</span>
-            <span class="paper-key-item" data-role="faculty">Faculty</span>
-            <span class="paper-key-item" data-role="postdoc">Postdoc</span>
-            <span class="paper-key-item" data-role="grad">Graduate student</span>
-            <span class="paper-key-item" data-role="ugrad">Undergraduate student</span>
-        </div>
-    </div>
-    <div class="publication-search-shell" data-publication-search data-max-results="{{ site.front_page_papers }}">
-        {% include publication-search-controls.html input_id="home-publication-search" %}
-        <div class="publication-search-results" data-search-results>
-            {% include front-page-papers.html %}
-        </div>
-        <p class="publication-search-empty" data-search-empty hidden>No publications match your search.</p>
-    </div>
-    <p class="section-link">
-        <span class="fa fa-fw fa-book"></span>
-        <a href="{{ site.base }}/publications.html">All papers&hellip;</a>
-    </p>
-</section>

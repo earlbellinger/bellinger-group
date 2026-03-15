@@ -1,0 +1,29 @@
+<section{% if include.section_id %} id="{{ include.section_id }}" data-home-anchor-target="{{ include.section_id }}"{% endif %} class="section-shell{% if include.class_name %} {{ include.class_name }}{% endif %}">
+    <div class="section-intro">
+        <div>
+            {% unless include.hide_section_label %}
+                <p class="section-label">{{ include.section_label | default: "Who we are" }}</p>
+            {% endunless %}
+            <h2{% if include.heading_id %} id="{{ include.heading_id }}"{% endif %}>{{ include.title | default: "People" }}</h2>
+        </div>
+        <p class="section-copy">
+            {{ include.copy | default: "An inclusive research group led by Earl Bellinger spanning postdocs, graduate students, and undergraduate researchers." }}
+        </p>
+    </div>
+    {% for role-table in page.role-tables %}
+        <section class="people row">
+            {% for role-column in role-table %}
+                <div class="col-md-{{ role-column.width }}">
+                    {% for role in role-column.roles %}
+                        {% assign show_image = role-column.image %}
+                        {% include role-people.html %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </section>
+    {% endfor %}
+    <p class="section-link">
+        <span class="fa fa-fw fa-users"></span>
+        <a href="#People" data-panel-link="People">See the whole group</a>
+    </p>
+</section>

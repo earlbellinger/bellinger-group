@@ -1,0 +1,30 @@
+<section id="papers" data-home-anchor-target="papers" class="section-shell">
+    <div class="section-intro">
+        <div>
+            <p class="section-label">Recent publications</p>
+            <h2 id="papers-preview-title">Papers</h2>
+        </div>
+        <div class="section-copy">
+            <div class="paper-key" aria-label="Author role key">
+                <span class="paper-key-label">Key:</span>
+                <span class="paper-key-item" data-role="faculty">Faculty</span>
+                <span class="paper-key-item" data-role="postdoc">Postdoc</span>
+                <span class="paper-key-item" data-role="grad">Graduate student</span>
+                <span class="paper-key-item" data-role="ugrad">Undergraduate student</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="publication-search-shell" data-publication-search data-max-results="{{ site.front_page_papers }}">
+        {% include publication-search-controls.html %}
+        <div class="publication-search-results" data-search-results>
+            {% include front-page-papers.html %}
+        </div>
+        <p class="publication-search-empty" data-search-empty hidden>No publications match your search.</p>
+    </div>
+
+    <p class="section-link">
+        <span class="fa fa-fw fa-book"></span>
+        <a href="#Papers" data-panel-link="Papers">All papers&hellip;</a>
+    </p>
+</section>

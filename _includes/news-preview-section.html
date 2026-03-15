@@ -1,0 +1,22 @@
+<section id="news" data-home-anchor-target="news" class="section-shell">
+    <div class="section-intro">
+        <div>
+            <p class="section-label">Latest updates</p>
+            <h2 id="news-preview-title">News and milestones</h2>
+        </div>
+        <p class="section-copy">
+            Recent papers, talks, awards, group events, and moments worth celebrating.
+        </p>
+    </div>
+
+    <ul class="news list-unstyled">
+        {% for post in site.posts limit: site.front_page_news %}
+            {% include news-item.html item=post %}
+        {% endfor %}
+    </ul>
+
+    <p class="section-link">
+        <span class="fa fa-fw fa-history"></span>
+        <a href="#News" data-panel-link="News">Older posts&hellip;</a>
+    </p>
+</section>

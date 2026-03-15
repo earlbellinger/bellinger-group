@@ -1,0 +1,38 @@
+<section{% if include.section_id %} id="{{ include.section_id }}" data-home-anchor-target="{{ include.section_id }}"{% endif %} class="section-shell{% if include.class_name %} {{ include.class_name }}{% endif %}">
+    <div class="section-intro">
+        <div>
+            {% if include.section_label %}
+                <p class="section-label">{{ include.section_label }}</p>
+            {% endif %}
+            <h2{% if include.heading_id %} id="{{ include.heading_id }}"{% endif %}>{{ include.title | default: "Papers" }}</h2>
+        </div>
+        <div class="section-copy">
+            <div class="paper-key" aria-label="Author role key">
+                <span class="paper-key-label">Key:</span>
+                <span class="paper-key-item" data-role="faculty">Faculty</span>
+                <span class="paper-key-item" data-role="postdoc">Postdoc</span>
+                <span class="paper-key-item" data-role="grad">Graduate student</span>
+                <span class="paper-key-item" data-role="ugrad">Undergraduate student</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="publication-search-shell" data-publication-search{% unless include.full_list %} data-max-results="{{ site.front_page_papers }}"{% endunless %}>
+        {% include publication-search-controls.html input_id=include.input_id %}
+        <div class="publication-search-results" data-search-results>
+            {% if include.full_list %}
+                {% include pubs.html %}
+            {% else %}
+                {% include front-page-papers.html %}
+            {% endif %}
+        </div>
+        <p class="publication-search-empty" data-search-empty hidden>No publications match your search.</p>
+    </div>
+
+    {% if include.show_all_link %}
+        <p class="section-link">
+            <span class="fa fa-fw fa-book"></span>
+            <a href="#{{ include.panel_target | default: 'Papers' }}" data-panel-link="{{ include.panel_target | default: 'Papers' }}">Open the full publication list</a>
+        </p>
+    {% endif %}
+</section>

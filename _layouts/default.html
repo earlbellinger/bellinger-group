@@ -24,23 +24,18 @@
                          alt="YAML" id="logo">
                 </a>
                 <ul class="nav nav-pills justify-content-center site-nav">
-
-                    {% assign shorturl = page.url | replace:'.html','' | replace:'index','' %}
+                    {% assign current_panel = page.panel | default: 'Home' %}
                     {% for item in site.navigation %}
-
-                        {% assign itemshorturl = item.link | replace:'.html','' %}
-
                         {% assign maybe-active = '' %}
-                        {% if item.title == 'Research' and page.layout == 'project' %}
-                            {% assign maybe-active = 'active' %}
-                        {% endif %}
-                        {% if itemshorturl == shorturl or is-research %}
+                        {% if item.panel == current_panel %}
                             {% assign maybe-active = 'active' %}
                         {% endif %}
 
                         <li class="nav-item">
                             <a class="nav-link {{ maybe-active }}"
-                               href="{{ site.base }}{{ item.link }}">
+                               href="{{ site.base }}{{ item.link }}"
+                               data-nav-target="{{ item.panel }}"
+                               {% if item.panel == current_panel %}aria-current="page"{% endif %}>
                                 {{ item.title }}
                             </a>
                         </li>
@@ -81,9 +76,9 @@
                 src="{{ site.base }}/js/srcset-polyfill.js"></script>
         <script type="text/javascript"
                 src="{{ site.base }}/js/publication-search.js"></script>
-        {% if page.name == 'blog.html' or page.url == '/blog.html' %}
         <script type="text/javascript"
                 src="{{ site.base }}/js/blog-filter.js"></script>
-        {% endif %}
+        <script type="text/javascript"
+                src="{{ site.base }}/js/panel-navigation.js"></script>
     </body>
 </html>
