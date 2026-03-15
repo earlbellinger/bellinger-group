@@ -29,9 +29,9 @@
 
 ### Generated artifacts
 
-- `_includes/front-page-papers.html`, `_includes/pubs.html`, `_includes/publication-count.html`, and `_includes/publication-search-tags.html` are generated files.
+- `_includes/front-page-papers.html`, `_includes/pubs.html`, `_includes/publication-count.html`, `_includes/publication-search-tags.html`, and `_data/publication-topics.yml` are generated files.
 - `_site/` is the fully built output site and should be treated as generated build output.
-- Do not hand-edit generated publication includes or `_site`; change the source data or generator instead, then rerender.
+- Do not hand-edit generated publication includes, `_data/publication-topics.yml`, or `_site`; change the source data or generator instead, then rerender.
 
 ### Other directories
 
@@ -80,6 +80,7 @@ topics = {population III, red giant, asteroseismology}
 - The visible tag buttons are auto-generated from the `topics`/`site_tags` values present in `bib/pubs.bib`.
 - There is no hardcoded tag list in the page template.
 - The generated tag include is `_includes/publication-search-tags.html`.
+- The generated agent-readable tag list is `_data/publication-topics.yml`. It is automatically populated from the bibtex file. This list should be drawn from when generating topic fields for new bibtex entries. Topics that are not in this list can be added to bibtex and the code will automatically add it to this yml file. 
 - Tags are only shown if more than one paper has that topic.
 - Tags are sorted by paper count descending, with alphabetical tie-breaking.
 - Each tag shows a small superscript count equal to the number of papers carrying that topic.

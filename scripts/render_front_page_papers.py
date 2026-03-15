@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import html
+import json
 import re
 import unicodedata
 from dataclasses import dataclass
@@ -584,6 +585,17 @@ def render_publication_search_tags_include(root: Path, entries: list[BibEntry] |
     return output_path
 
 
+def render_publication_topics_data(root: Path, entries: list[BibEntry] | None = None) -> Path:
+    output_path = root / "_data" / "publication-topics.yml"
+    entries = entries if entries is not None else load_bib_entries(root)
+    topic_summaries = publication_topic_summaries(entries)
+
+    lines = [f"- {json.dumps(label)}" for _normalized, label, _count in topic_summaries]
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
+    return output_path
+
+
 def citation_sort_key(entry: BibEntry) -> tuple[int, int]:
     year = int(clean_text(entry.fields.get("year")) or 0)
     month = month_number(entry.fields.get("month"))
@@ -611,6 +623,7 @@ def render_front_page_papers_include(root: Path, limit: int) -> Path:
 
     entries = load_bib_entries(root)
     render_publication_search_tags_include(root, entries)
+    render_publication_topics_data(root, entries)
     role_lookup = build_role_lookup(people_path)
 
     lines: list[str] = ['<ul class="paper-list list-unstyled">']
@@ -652,6 +665,7 @@ def render_publications_include(root: Path) -> Path:
 
     entries = load_bib_entries(root)
     render_publication_search_tags_include(root, entries)
+    render_publication_topics_data(root, entries)
     role_lookup = build_role_lookup(people_path)
 
     lines: list[str] = ['<table class="table">', "<tbody>"]
