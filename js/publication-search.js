@@ -1,6 +1,12 @@
 (function () {
     "use strict";
 
+    var STORAGE_KEY = "bellinger-publication-search-state";
+
+    function toArray(list) {
+        return Array.prototype.slice.call(list || []);
+    }
+
     function normalizeText(value) {
         return String(value || "")
             .normalize("NFKD")
@@ -15,21 +21,70 @@
         return count === 1 ? noun : noun + "s";
     }
 
-    function initializePublicationSearch(container) {
+    function sanitizeState(state, canonicalTags) {
+        var selectedTags = [];
+        var seenTags = {};
+
+        toArray((state && state.selectedTags) || []).forEach(function (tag) {
+            var label = String(tag || "").trim();
+            var normalizedTag = normalizeText(label);
+
+            if (!normalizedTag || seenTags[normalizedTag]) {
+                return;
+            }
+
+            seenTags[normalizedTag] = true;
+            selectedTags.push((canonicalTags && canonicalTags[normalizedTag]) || label);
+        });
+
+        return {
+            query: String((state && state.query) || ""),
+            selectedTags: selectedTags
+        };
+    }
+
+    function loadStoredState() {
+        try {
+            return sanitizeState(JSON.parse(window.sessionStorage.getItem(STORAGE_KEY) || "{}"));
+        } catch (error) {
+            return sanitizeState({});
+        }
+    }
+
+    function saveStoredState(state) {
+        try {
+            window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(sanitizeState(state)));
+        } catch (error) {
+            // Ignore storage failures so search still works in restricted browsers.
+        }
+    }
+
+    function initializePublicationSearch(container, sharedStore) {
         var input = container.querySelector("[data-search-input]");
         var results = container.querySelector("[data-search-results]");
         var status = container.querySelector("[data-search-status]");
         var empty = container.querySelector("[data-search-empty]");
         var activeTagsHost = container.querySelector("[data-search-active-tags]");
-        var tagButtons = Array.prototype.slice.call(container.querySelectorAll("[data-search-tag]"));
-        var entries = Array.prototype.slice.call(container.querySelectorAll("[data-publication-entry]"));
+        var tagButtons = toArray(container.querySelectorAll("[data-search-tag]"));
+        var entries = toArray(container.querySelectorAll("[data-publication-entry]"));
         var maxResultsValue = parseInt(container.getAttribute("data-max-results") || "", 10);
         var maxResults = Number.isFinite(maxResultsValue) && maxResultsValue > 0 ? maxResultsValue : null;
+        var canonicalTags = {};
         var selectedTags = [];
+        var api;
 
         if (!input || !entries.length) {
-            return;
+            return null;
         }
+
+        tagButtons.forEach(function (button) {
+            var tag = (button.getAttribute("data-search-tag") || "").trim();
+            var normalizedTag = normalizeText(tag);
+
+            if (normalizedTag && !canonicalTags[normalizedTag]) {
+                canonicalTags[normalizedTag] = tag;
+            }
+        });
 
         function updateVisibleClasses(visibleEntries) {
             entries.forEach(function (entry) {
@@ -83,35 +138,14 @@
             });
         }
 
-        function renderActiveTags() {
-            if (!activeTagsHost) {
-                return;
-            }
-
-            while (activeTagsHost.firstChild) {
-                activeTagsHost.removeChild(activeTagsHost.firstChild);
-            }
-            selectedTags.forEach(function (tag) {
-                var chip = document.createElement("button");
-                chip.type = "button";
-                chip.className = "publication-search-chip";
-                chip.setAttribute("data-active-tag", tag);
-                chip.setAttribute("aria-label", "Remove " + tag + " filter");
-                chip.innerHTML =
-                    '<span class="publication-search-chip-label"></span>' +
-                    '<span class="publication-search-chip-remove" aria-hidden="true">&times;</span>';
-                chip.querySelector(".publication-search-chip-label").textContent = tag;
-                chip.addEventListener("click", function () {
-                    selectedTags = selectedTags.filter(function (value) {
-                        return value !== tag;
-                    });
-                    syncTagButtons();
-                    renderActiveTags();
-                    applySearch();
-                    input.focus();
-                });
-                activeTagsHost.appendChild(chip);
-            });
+        function getState() {
+            return sanitizeState(
+                {
+                    query: input.value,
+                    selectedTags: selectedTags
+                },
+                canonicalTags
+            );
         }
 
         function syncTagButtons() {
@@ -220,6 +254,56 @@
             }
         }
 
+        function publishState() {
+            if (!sharedStore || typeof sharedStore.setState !== "function") {
+                return;
+            }
+
+            sharedStore.setState(getState(), api);
+        }
+
+        function renderActiveTags() {
+            if (!activeTagsHost) {
+                return;
+            }
+
+            while (activeTagsHost.firstChild) {
+                activeTagsHost.removeChild(activeTagsHost.firstChild);
+            }
+            selectedTags.forEach(function (tag) {
+                var chip = document.createElement("button");
+                chip.type = "button";
+                chip.className = "publication-search-chip";
+                chip.setAttribute("data-active-tag", tag);
+                chip.setAttribute("aria-label", "Remove " + tag + " filter");
+                chip.innerHTML =
+                    '<span class="publication-search-chip-label"></span>' +
+                    '<span class="publication-search-chip-remove" aria-hidden="true">&times;</span>';
+                chip.querySelector(".publication-search-chip-label").textContent = tag;
+                chip.addEventListener("click", function () {
+                    selectedTags = selectedTags.filter(function (value) {
+                        return value !== tag;
+                    });
+                    syncTagButtons();
+                    renderActiveTags();
+                    applySearch();
+                    publishState();
+                    input.focus();
+                });
+                activeTagsHost.appendChild(chip);
+            });
+        }
+
+        function setState(nextState) {
+            var sanitizedState = sanitizeState(nextState, canonicalTags);
+
+            input.value = sanitizedState.query;
+            selectedTags = sanitizedState.selectedTags;
+            syncTagButtons();
+            renderActiveTags();
+            applySearch();
+        }
+
         tagButtons.forEach(function (button) {
             button.addEventListener("click", function () {
                 var tag = button.getAttribute("data-search-tag") || "";
@@ -239,28 +323,59 @@
                 syncTagButtons();
                 renderActiveTags();
                 applySearch();
+                publishState();
                 input.focus();
             });
         });
 
-        input.addEventListener("input", applySearch);
+        input.addEventListener("input", function () {
+            applySearch();
+            publishState();
+        });
         input.addEventListener("keydown", function (event) {
             if (event.key === "Backspace" && !input.value && selectedTags.length) {
                 selectedTags = selectedTags.slice(0, -1);
                 syncTagButtons();
                 renderActiveTags();
                 applySearch();
+                publishState();
             }
         });
 
-        syncTagButtons();
-        renderActiveTags();
-        applySearch();
+        api = {
+            syncState: function (nextState) {
+                setState(nextState);
+            }
+        };
+
+        setState((sharedStore && sharedStore.getState && sharedStore.getState()) || {});
+
+        return api;
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        Array.prototype.slice
-            .call(document.querySelectorAll("[data-publication-search]"))
-            .forEach(initializePublicationSearch);
+        var sharedState = loadStoredState();
+        var instances = [];
+        var sharedStore = {
+            getState: function () {
+                return sharedState;
+            },
+            setState: function (nextState, source) {
+                sharedState = sanitizeState(nextState);
+                saveStoredState(sharedState);
+
+                instances.forEach(function (instance) {
+                    if (instance && instance !== source) {
+                        instance.syncState(sharedState);
+                    }
+                });
+            }
+        };
+
+        instances = toArray(document.querySelectorAll("[data-publication-search]"))
+            .map(function (container) {
+                return initializePublicationSearch(container, sharedStore);
+            })
+            .filter(Boolean);
     });
 })();
