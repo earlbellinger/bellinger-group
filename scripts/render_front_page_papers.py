@@ -1,15 +1,30 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import html
 import json
+import os
 import re
+import sys
 import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
+from urllib import error as urlerror
+from urllib import parse as urlparse
+from urllib import request as urlrequest
 
 
 ROOT = Path(__file__).resolve().parents[1]
+ADSABS_API_URL = "https://api.adsabs.harvard.edu/v1/search/query"
+ADSABS_API_KEY_ENV = "ADSABS_API_KEY"
+ADSABS_API_KEY_PATHS = (
+    Path(".secrets/adsabs_api_key"),
+    Path(".adsabs_api_key"),
+)
+ADSABS_CITATION_CACHE_PATH = Path(".cache/adsabs_citation_counts.json")
+ADSABS_QUERY_CHUNK_SIZE = 25
+ADSABS_USER_AGENT = "bellinger-group-publications/1.0"
 
 MONTH_ORDER = {
     "jan": 1,
@@ -529,6 +544,164 @@ def publication_links(entry: BibEntry) -> list[tuple[str, str]]:
     return links
 
 
+def load_adsabs_api_key(root: Path) -> str | None:
+    api_key = os.getenv(ADSABS_API_KEY_ENV, "").strip()
+    if api_key:
+        return api_key
+
+    for relative_path in ADSABS_API_KEY_PATHS:
+        secret_path = root / relative_path
+        if not secret_path.exists():
+            continue
+        for raw_line in secret_path.read_text(encoding="utf-8").splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if "=" in line:
+                key_name, key_value = line.split("=", 1)
+                if key_name.strip() == ADSABS_API_KEY_ENV:
+                    line = key_value.strip()
+            if len(line) >= 2 and line[0] == line[-1] and line[0] in {'"', "'"}:
+                line = line[1:-1]
+            if line:
+                return line
+    return None
+
+
+def load_adsabs_citation_cache(root: Path) -> dict[str, int]:
+    cache_path = root / ADSABS_CITATION_CACHE_PATH
+    if not cache_path.exists():
+        return {}
+
+    try:
+        payload = json.loads(cache_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        print(f"Warning: Could not read ADS citation cache; ignoring it ({exc}).", file=sys.stderr)
+        return {}
+
+    counts = payload.get("counts") if isinstance(payload, dict) else payload
+    if not isinstance(counts, dict):
+        return {}
+
+    cached_counts: dict[str, int] = {}
+    for key, value in counts.items():
+        if not isinstance(key, str):
+            continue
+        try:
+            cached_counts[key] = max(int(value), 0)
+        except (TypeError, ValueError):
+            continue
+    return cached_counts
+
+
+def write_adsabs_citation_cache(root: Path, citation_counts: dict[str, int]) -> None:
+    cache_path = root / ADSABS_CITATION_CACHE_PATH
+    payload = {
+        "updated_at": dt.datetime.now(dt.timezone.utc).isoformat().replace("+00:00", "Z"),
+        "counts": {key: citation_counts[key] for key in sorted(citation_counts)},
+    }
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    cache_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def ads_bibcode(entry: BibEntry) -> str | None:
+    if entry.key:
+        return clean_text(entry.key)
+
+    ads = clean_text(entry.fields.get("adsurl"))
+    match = re.search(r"/abs/([^/?#]+)", ads)
+    if match:
+        return urlparse.unquote(match.group(1))
+    return None
+
+
+def chunked(values: list[str], size: int) -> list[list[str]]:
+    return [values[index : index + size] for index in range(0, len(values), size)]
+
+
+def escape_ads_query_value(value: str) -> str:
+    return value.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def fetch_ads_citation_counts(root: Path, entries: list[BibEntry]) -> dict[str, int]:
+    cached_counts = load_adsabs_citation_cache(root)
+    api_key = load_adsabs_api_key(root)
+    if not api_key:
+        if cached_counts:
+            print("Warning: ADS API key not found; using cached citation counts.", file=sys.stderr)
+        return cached_counts
+
+    bibcodes = [bibcode for entry in entries if (bibcode := ads_bibcode(entry))]
+    if not bibcodes:
+        return {}
+
+    citation_lookup: dict[str, int] = {}
+    try:
+        for bibcode_group in chunked(sorted(set(bibcodes)), ADSABS_QUERY_CHUNK_SIZE):
+            query = " OR ".join(
+                f'bibcode:"{escape_ads_query_value(bibcode)}"'
+                for bibcode in bibcode_group
+            )
+            params = {
+                "q": f"({query})",
+                "fl": "bibcode,citation_count",
+                "rows": str(len(bibcode_group)),
+            }
+            request = urlrequest.Request(
+                f"{ADSABS_API_URL}?{urlparse.urlencode(params)}",
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Accept": "application/json",
+                    "User-Agent": ADSABS_USER_AGENT,
+                },
+            )
+            with urlrequest.urlopen(request, timeout=30) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+            for document in payload.get("response", {}).get("docs", []):
+                bibcode = str(document.get("bibcode") or "").strip()
+                if not bibcode:
+                    continue
+                try:
+                    citation_lookup[bibcode] = max(int(document.get("citation_count") or 0), 0)
+                except (TypeError, ValueError):
+                    citation_lookup[bibcode] = 0
+    except (TimeoutError, OSError, ValueError, json.JSONDecodeError, urlerror.HTTPError, urlerror.URLError) as exc:
+        if cached_counts:
+            print(f"Warning: ADS citation lookup failed; using cached citation counts ({exc}).", file=sys.stderr)
+            return cached_counts
+        print(f"Warning: ADS citation lookup failed; continuing without citation counts ({exc}).", file=sys.stderr)
+        return {}
+
+    resolved_counts = {
+        entry.key: citation_lookup.get(bibcode, cached_counts.get(entry.key, 0))
+        for entry in entries
+        if (bibcode := ads_bibcode(entry))
+    }
+    write_adsabs_citation_cache(root, resolved_counts)
+    return resolved_counts
+
+
+def citation_label(count: int) -> str:
+    return f"{count} citation" if count == 1 else f"{count} citations"
+
+
+def render_citation_count(count: int) -> str:
+    if count <= 0:
+        return ""
+
+    label = html.escape(citation_label(count))
+    if count > 100:
+        return (
+            '<span class="citation-count citation-count-hot">'
+            f"<strong>{label}</strong> "
+            '<span class="citation-fire" aria-hidden="true">🔥</span>'
+            "</span>"
+        )
+    if count > 50:
+        return f'<span class="citation-count citation-count-featured"><strong>{label}</strong></span>'
+    return f'<span class="citation-count">{label}</span>'
+
+
 def venue(entry: BibEntry) -> str:
     for field_name in ("journal", "booktitle", "publisher"):
         value = clean_text(entry.fields.get(field_name))
@@ -666,6 +839,7 @@ def render_publications_include(root: Path) -> Path:
     entries = load_bib_entries(root)
     render_publication_search_tags_include(root, entries)
     render_publication_topics_data(root, entries)
+    citation_counts = fetch_ads_citation_counts(root, entries)
     role_lookup = build_role_lookup(people_path)
 
     lines: list[str] = ['<table class="table">', "<tbody>"]
@@ -721,12 +895,15 @@ def render_publications_include(root: Path) -> Path:
         if note:
             lines.append(f'      <span class="note"> {note}.</span>')
         links = publication_links(entry)
-        if links:
-            rendered_links = " ".join(
-                f'[<a href="{html.escape(link)}">{html.escape(label)}</a>]'
-                for label, link in links
-            )
-            lines.append(f'      <br />\n      <span class="links">{rendered_links}</span>')
+        citation_html = render_citation_count(citation_counts.get(entry.key, 0))
+        rendered_links = [
+            f'[<a href="{html.escape(link)}">{html.escape(label)}</a>]'
+            for label, link in links
+        ]
+        if citation_html:
+            rendered_links.append(citation_html)
+        if rendered_links:
+            lines.append(f'      <br />\n      <span class="links">{" ".join(rendered_links)}</span>')
         lines.append("    </td>")
         lines.append("  </tr>")
         if year_value:

@@ -1284,6 +1284,22 @@ svg {
     color: var(--ink);
 }
 
+.publication .links {
+    color: rgba(82, 98, 125, 0.84);
+    font-size: 0.94rem;
+    line-height: 1.6;
+}
+
+.publication .citation-count {
+    margin-left: 0.35rem;
+    color: rgba(82, 98, 125, 0.84);
+    white-space: nowrap;
+}
+
+.publication .citation-fire {
+    margin-left: 0.12rem;
+}
+
 .footer {
     margin-top: 2.5rem;
     padding-top: 1.35rem;

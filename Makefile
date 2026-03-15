@@ -4,8 +4,9 @@
 all: build
 
 PYTHON ?= python3
+ADSABS_SECRET := $(wildcard .secrets/adsabs_api_key)
 
-_includes/pubs.html: bib/pubs.bib _data/people.yml scripts/render_front_page_papers.py scripts/render_publications_include.py
+_includes/pubs.html: bib/pubs.bib _data/people.yml scripts/render_front_page_papers.py scripts/render_publications_include.py $(ADSABS_SECRET)
 	mkdir -p _includes
 	$(PYTHON) scripts/render_publications_include.py
 

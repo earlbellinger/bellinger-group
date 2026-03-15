@@ -5,3 +5,5 @@ _includes/pubs.html
 __pycache__/
 *.pyc
 /scripts/__pycache__
+.secrets/
+.cache/adsabs_citation_counts.json
