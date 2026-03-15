@@ -51,13 +51,13 @@ navigation:
   - title: Home
     link: /
   - title: News
-    link: /#news
+    link: /blog.html
   - title: People
-    link: /#people
+    link: /people.html
   - title: Funding
-    link: /#funding
+    link: /funding.html
   - title: Papers
-    link: /#papers
+    link: /publications.html
 #  - title: Research
 #    link: /research.html
 #  - title: Publications

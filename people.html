@@ -1,21 +1,39 @@
 ---
 layout: default
 title: People
+notitle: true
 
-picture-role-groups:
-- {roles: [faculty, postdoc, postdog], width: 4}
-- {roles: [grad, ugrad], width: 8}
-- {roles: [ugrad-alum], width: 6}
-- {roles: [alum-grad, alum-postdoc], width: 6}
+# groups of columns of {roles: list, width: num, image: bool}
+role-tables:
+- - roles: [faculty, postdoc, postdog]
+    width: 4
+    image: true
+  - roles: [grad, ugrad]
+    width: 8
+    image: true
 ---
 
-<section class="people row">
-    {% for role-group in page.picture-role-groups %}
-        <div class="col-md-{{ role-group.width }}">
-            {% for role in role-group.roles %}
-                {% assign show_image = true %}
-                {% include role-people.html %}
-            {% endfor %}
+<div id="people" class="section-shell">
+    <div class="section-intro">
+        <div>
+            <h2>People</h2>
         </div>
+        <p class="section-copy">
+            An inclusive research group led by Earl Bellinger spanning postdocs, graduate students,
+            and undergraduate researchers.
+        </p>
+    </div>
+    {% for role-table in page.role-tables %}
+        <section class="people row">
+            {% for role-column in role-table %}
+                <div class="col-md-{{ role-column.width }}">
+                    {% for role in role-column.roles %}
+                        {% assign show_image = role-column.image %}
+                        {% include role-people.html %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </section>
     {% endfor %}
-</section>
+    {% include alumni-panel.html title="Alumni" image=true %}
+</div>

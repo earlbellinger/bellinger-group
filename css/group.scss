@@ -1247,7 +1247,8 @@ a > .fa {
 
 @media (min-width: 768px) {
     .role.grad,
-    .role.alum-grad {
+    .role.alum-grad,
+    .role.alum-all {
         column-count: 2;
     }
 
@@ -1382,5 +1383,11 @@ a > .fa {
 
     .person-with-image {
         gap: 0.6rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .role.alum-all {
+        column-count: 3;
     }
 }

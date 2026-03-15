@@ -1,0 +1,76 @@
+{% assign has_people = false %}
+{% for item in site.data.people %}
+    {% assign person = item[1] %}
+    {% if person.role == "alum-grad" or person.role == "alum-postdoc" or person.role == "ugrad-alum" %}
+        {% assign has_people = true %}
+    {% endif %}
+{% endfor %}
+
+{% if has_people %}
+<section class="people row">
+    <div class="col-md-12">
+        <h3 class="pt-3">{{ include.title | default: "Alumni" }}</h3>
+        <div class="role alum-all">
+            {% for item in site.data.people %}
+                {% assign person = item[1] %}
+                {% if person.role == "alum-grad" or person.role == "alum-postdoc" or person.role == "ugrad-alum" %}
+                    {% if person.webpage %}
+                        {% capture name %}
+                            <a class="person-link" href="{{ person.webpage | escape }}"> {{ person.display_name }} </a>
+                        {% endcapture %}
+                    {% else %}
+                        {% assign name = person.display_name %}
+                    {% endif %}
+
+                    {% if include.image %}
+                        <div class="person person-with-image">
+                            <div class="person-avatar">
+                                {% if person.image %}
+                                    {% if person.webpage %}
+                                        <a href="{{ person.webpage | escape }}" style="text-decoration: none">
+                                            <img class="rounded-circle profile"
+                                                 alt="{{ person.display_name }}"
+                                                 title="{{ person.display_name }}"
+                                                 src="{{ site.base }}{{ person.image }}" />
+                                        </a>
+                                    {% else %}
+                                        <img class="rounded-circle profile"
+                                             alt="{{ person.display_name }}"
+                                             title="{{ person.display_name }}"
+                                             src="{{ site.base }}{{ person.image }}" />
+                                    {% endif %}
+                                {% else %}
+                                    <svg class="profile noprofile"
+                                         aria-label="{{ person.display_name }}"
+                                         viewBox="0 0 100 100">
+                                        <title>{{ person.display_name }}</title>
+                                        <circle r="50" cx="50" cy="50" />
+                                        <text x="50" y="50"
+                                              font-size="70"
+                                              text-anchor="middle" dominant-baseline="central">
+                                            {{ person.display_name | slice: 0 }}
+                                        </text>
+                                    </svg>
+                                {% endif %}
+                            </div>
+                            <div class="person-copy">
+                                <h6 class="person-name"> {{ name }} </h6>
+                                {% if person.bio %}
+                                    <div class="bio">{{ person.bio }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="person person-without-image">
+                            {{ name }}
+                            {% if person.bio %}
+                                <span class="bio">{{ person.bio }}</span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}

@@ -1,5 +1,4 @@
 <div class="publication-search-controls">
-    <label class="publication-search-label" for="{{ include.input_id }}">Search publications</label>
     <div class="publication-search-field" data-search-field>
         <div class="publication-search-active-tags" data-search-active-tags></div>
         <input
@@ -7,6 +6,7 @@
             class="publication-search-input"
             type="search"
             data-search-input
+            aria-label="Search publications"
             placeholder="Search by title, author, journal, or keyword"
             autocomplete="off"
             spellcheck="false"

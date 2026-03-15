@@ -11,12 +11,6 @@ role-tables:
   - roles: [grad, ugrad]
     width: 8
     image: true
-- - roles: [ugrad-alum]
-    width: 6
-    image: true
-  - roles: [alum-grad, alum-postdoc]
-    width: 6
-    image: true
 ---
 
 <section class="hero-panel">
@@ -137,7 +131,7 @@ role-tables:
             <h2>People</h2>
         </div>
         <p class="section-copy">
-            A collaborative research group led by Earl Bellinger spanning postdocs, graduate students,
+            An inclusive research group led by Earl Bellinger spanning postdocs, graduate students,
             and undergraduate researchers.
         </p>
     </div>
@@ -153,6 +147,7 @@ role-tables:
             {% endfor %}
         </section>
     {% endfor %}
+    {% include alumni-panel.html title="Alumni" image=true %}
 </div>
 
 <section id="funding" class="section-shell">
