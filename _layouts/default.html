@@ -4,14 +4,15 @@
         <title>{{ site.name }}: {{ page.title }}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% assign asset_version = site.time | date: '%s' %}
         <link rel="stylesheet"
               href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
               integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
               crossorigin="anonymous">
         <link rel="stylesheet"
               href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="{{ site.base }}/css/group.css">
-        <link rel="icon" type="image/x-icon" href="{{ site.base }}/img/favicon.png" />
+        <link rel="stylesheet" href="{{ site.base }}/css/group.css?v={{ asset_version }}">
+        <link rel="icon" type="image/x-icon" href="{{ site.base }}/img/favicon.png?v={{ asset_version }}" />
     </head>
     <body class="{% if page.url == '/' %}page-home{% else %}page-interior{% endif %}">
         <div class="site-aura site-aura-left"></div>
@@ -19,8 +20,8 @@
         <div class="container site-shell">
             <header class="header site-header d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between">
                 <a href="{{ site.base }}/" class="brand-link" aria-label="{{ site.name }}">
-                    <img src="{{ site.base }}/img/YAML-logo.jpg"
-                         srcset="{{ site.base }}/img/YAML-logo.jpg"
+                    <img src="{{ site.base }}/img/YAML-logo.jpg?v={{ asset_version }}"
+                         srcset="{{ site.base }}/img/YAML-logo.jpg?v={{ asset_version }}"
                          alt="YAML" id="logo">
                 </a>
                 <ul class="nav nav-pills justify-content-center site-nav">
@@ -73,12 +74,12 @@
 
         <!-- Support retina images. -->
         <script type="text/javascript"
-                src="{{ site.base }}/js/srcset-polyfill.js"></script>
+                src="{{ site.base }}/js/srcset-polyfill.js?v={{ asset_version }}"></script>
         <script type="text/javascript"
-                src="{{ site.base }}/js/publication-search.js"></script>
+                src="{{ site.base }}/js/publication-search.js?v={{ asset_version }}"></script>
         <script type="text/javascript"
-                src="{{ site.base }}/js/blog-filter.js"></script>
+                src="{{ site.base }}/js/blog-filter.js?v={{ asset_version }}"></script>
         <script type="text/javascript"
-                src="{{ site.base }}/js/panel-navigation.js"></script>
+                src="{{ site.base }}/js/panel-navigation.js?v={{ asset_version }}"></script>
     </body>
 </html>

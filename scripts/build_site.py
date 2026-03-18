@@ -479,6 +479,7 @@ def write_document(document: Document, rendered: str) -> None:
 
 def main() -> int:
     config = load_yaml(ROOT / "_config.yml")
+    config["time"] = dt.datetime.now(dt.timezone.utc)
     excludes = {str(item) for item in config.get("exclude", [])}
     people = LiquidMap(load_yaml(ROOT / "_data" / "people.yml"))
 
