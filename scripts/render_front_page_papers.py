@@ -461,6 +461,13 @@ def split_authors(value: str | None) -> list[str]:
     return [author for author in re.split(r"\s+and\s+", value or "") if author.strip()]
 
 
+def has_group_member_first_author(entry: BibEntry, role_lookup: dict[tuple[str, str], str]) -> bool:
+    authors = split_authors(entry.fields.get("author"))
+    if not authors:
+        return False
+    return bool(match_role(authors[0], role_lookup))
+
+
 def join_author_list(authors: list[str]) -> str:
     if len(authors) <= 2:
         return " and ".join(authors)
@@ -798,9 +805,21 @@ def render_front_page_papers_include(root: Path, limit: int) -> Path:
     render_publication_search_tags_include(root, entries)
     render_publication_topics_data(root, entries)
     role_lookup = build_role_lookup(people_path)
+    featured_entry_keys = {
+        entry.key
+        for entry in entries
+        if has_group_member_first_author(entry, role_lookup)
+    }
+    visible_entry_keys: set[str] = set()
+    for entry in entries:
+        if entry.key not in featured_entry_keys:
+            continue
+        visible_entry_keys.add(entry.key)
+        if len(visible_entry_keys) >= limit:
+            break
 
     lines: list[str] = ['<ul class="paper-list list-unstyled">']
-    for index, entry in enumerate(entries):
+    for entry in entries:
         authors = render_authors(entry.fields.get("author"), role_lookup)
         year = html.escape(clean_text(entry.fields.get("year")))
         title = html.escape(clean_text(entry.fields.get("title")))
@@ -809,11 +828,13 @@ def render_front_page_papers_include(root: Path, limit: int) -> Path:
         search_topics = html.escape("|".join(publication_topics(entry)), quote=True)
         url = ads_url(entry)
         linked_title = f'<a href="{html.escape(url)}">{title}</a>' if url else title
-        hidden_attr = ' hidden=""' if index >= limit else ""
+        first_author_group_member = "true" if entry.key in featured_entry_keys else "false"
+        hidden_attr = ' hidden=""' if entry.key not in visible_entry_keys else ""
         lines.append(
             '  '
             f'<li class="paper-entry" data-publication-entry="" data-search-text="{search_text}" '
-            f'data-search-topics="{search_topics}"{hidden_attr}>'
+            f'data-search-topics="{search_topics}" '
+            f'data-first-author-group-member="{first_author_group_member}"{hidden_attr}>'
         )
         lines.append(
             '    '

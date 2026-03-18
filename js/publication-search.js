@@ -67,6 +67,9 @@
         var activeTagsHost = container.querySelector("[data-search-active-tags]");
         var tagButtons = toArray(container.querySelectorAll("[data-search-tag]"));
         var entries = toArray(container.querySelectorAll("[data-publication-entry]"));
+        var defaultFirstAuthorGroupMemberOnly = container.hasAttribute(
+            "data-default-first-author-group-member-only"
+        );
         var maxResultsValue = parseInt(container.getAttribute("data-max-results") || "", 10);
         var maxResults = Number.isFinite(maxResultsValue) && maxResultsValue > 0 ? maxResultsValue : null;
         var canonicalTags = {};
@@ -178,6 +181,10 @@
             });
         }
 
+        function isDefaultFrontPageEntry(entry) {
+            return entry.getAttribute("data-first-author-group-member") === "true";
+        }
+
         function statusMessage(visibleCount, matchingCount, hasFilters) {
             if (matchingCount === 0) {
                 return "No matching papers.";
@@ -222,9 +229,15 @@
             var matchingEntries = [];
             var visibleEntries = [];
             var hasFilters = queryTerms.length > 0 || tagTerms.length > 0;
+            var useDefaultFirstAuthorGroupMemberOnly =
+                defaultFirstAuthorGroupMemberOnly && !hasFilters;
 
             entries.forEach(function (entry) {
-                if (matchesEntry(entry, queryTerms) && matchesTopics(entry, tagTerms)) {
+                if (
+                    matchesEntry(entry, queryTerms) &&
+                    matchesTopics(entry, tagTerms) &&
+                    (!useDefaultFirstAuthorGroupMemberOnly || isDefaultFrontPageEntry(entry))
+                ) {
                     matchingEntries.push(entry);
                 }
             });
