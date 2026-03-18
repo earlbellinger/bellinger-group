@@ -451,9 +451,21 @@ body .header .nav-pills .nav-link:not(.active):hover {
 
 .spotlight-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
     gap: 1rem;
     margin-bottom: 2.25rem;
+}
+
+.spotlight-row {
+    display: grid;
+    gap: 1rem;
+}
+
+.spotlight-row-leading {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
+}
+
+.spotlight-row-trailing {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
 }
 
 .spotlight-card {
@@ -477,6 +489,10 @@ body .header .nav-pills .nav-link:not(.active):hover {
 
 .spotlight-card-primary .spotlight-label::before {
     opacity: 0.35;
+}
+
+.spotlight-card-primary a {
+    color: inherit;
 }
 
 .spotlight-card h2 {
@@ -1366,6 +1382,7 @@ a > .fa {
     }
 
     .hero-panel,
+    .spotlight-row,
     .spotlight-grid {
         grid-template-columns: 1fr;
     }
