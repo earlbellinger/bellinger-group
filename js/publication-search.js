@@ -231,6 +231,7 @@
             var hasFilters = queryTerms.length > 0 || tagTerms.length > 0;
             var useDefaultFirstAuthorGroupMemberOnly =
                 defaultFirstAuthorGroupMemberOnly && !hasFilters;
+            var statusMatchingCount;
 
             entries.forEach(function (entry) {
                 if (
@@ -262,8 +263,11 @@
             if (empty) {
                 empty.hidden = matchingEntries.length !== 0;
             }
+            statusMatchingCount = useDefaultFirstAuthorGroupMemberOnly
+                ? entries.length
+                : matchingEntries.length;
             if (status) {
-                status.textContent = statusMessage(visibleEntries.length, matchingEntries.length, hasFilters);
+                status.textContent = statusMessage(visibleEntries.length, statusMatchingCount, hasFilters);
             }
         }
 
