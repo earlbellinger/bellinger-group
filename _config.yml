@@ -1,5 +1,8 @@
 name: YAML | Bellinger Research Group — Yale University
 url: http://www.astro.yale.edu/bellinger/
+description: The Yale AstroML Research Group in the Department of Astronomy at Yale University.
+social_image: img/YAML-logo.jpg
+social_image_alt: YAML logo
 
 exclude: [bibble, README.md, Makefile, screenshot.png]
 

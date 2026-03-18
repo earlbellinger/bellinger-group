@@ -47,7 +47,7 @@ thiago:
 
 naomi:
     display_name: "Naomi Gluck"
-    bio: Ph.D. Student, Yale Physics
+    bio: Ph.D. Candidate, Yale Physics
     image: /img/people/naomi.png
     role: grad
     webpage: "https://ngluck.github.io"
@@ -116,7 +116,7 @@ surendra:
 
 bhavya:
     display_name: "Bhavya Pardasani"
-    bio: Ph.D. Student, Yale Astronomy
+    bio: Ph.D. Candidate, Yale Astronomy
     role: grad
     image: /img/people/bhavya.png
 

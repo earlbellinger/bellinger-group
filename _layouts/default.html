@@ -1,10 +1,52 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{ site.name }}: {{ page.title }}</title>
+        {% assign asset_version = site.time | date: '%s' %}
+        {% assign page_title = site.name %}
+        {% if page.title %}
+            {% assign page_title = site.name | append: ': ' | append: page.title %}
+        {% endif %}
+        {% assign page_description = page.description | default: page.excerpt | default: site.description | strip_html | strip_newlines | replace: '  ', ' ' | truncate: 200 %}
+        {% assign canonical_path = page.url | default: '' | replace_first: '/', '' %}
+        {% assign canonical_url = site.url | append: canonical_path %}
+        {% assign social_type = 'website' %}
+        {% if page.date %}
+            {% assign social_type = 'article' %}
+        {% endif %}
+        {% assign social_image_path = page.social_image | default: page.image | default: site.social_image %}
+        {% assign social_image_alt = site.social_image_alt %}
+        {% if page.social_image or page.image %}
+            {% assign social_image_alt = page.title | default: site.social_image_alt %}
+        {% endif %}
+        {% if page.social_image_alt %}
+            {% assign social_image_alt = page.social_image_alt %}
+        {% endif %}
+        {% assign social_image_url = social_image_path %}
+        {% unless social_image_url contains '://' %}
+            {% assign social_image_url = social_image_url | replace_first: './', '' %}
+            {% assign social_image_leading_char = social_image_url | slice: 0, 1 %}
+            {% if social_image_leading_char == '/' %}
+                {% assign social_image_url = social_image_url | replace_first: '/', '' %}
+            {% endif %}
+            {% assign social_image_url = site.url | append: social_image_url %}
+        {% endunless %}
+        <title>{{ page_title }}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        {% assign asset_version = site.time | date: '%s' %}
+        <meta name="description" content="{{ page_description | escape_once }}">
+        <link rel="canonical" href="{{ canonical_url }}">
+        <meta property="og:site_name" content="{{ site.name | escape_once }}">
+        <meta property="og:title" content="{{ page_title | escape_once }}">
+        <meta property="og:description" content="{{ page_description | escape_once }}">
+        <meta property="og:type" content="{{ social_type }}">
+        <meta property="og:url" content="{{ canonical_url }}">
+        <meta property="og:image" content="{{ social_image_url }}">
+        <meta property="og:image:alt" content="{{ social_image_alt | escape_once }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ page_title | escape_once }}">
+        <meta name="twitter:description" content="{{ page_description | escape_once }}">
+        <meta name="twitter:image" content="{{ social_image_url }}">
+        <meta name="twitter:image:alt" content="{{ social_image_alt | escape_once }}">
         <link rel="stylesheet"
               href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
               integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
