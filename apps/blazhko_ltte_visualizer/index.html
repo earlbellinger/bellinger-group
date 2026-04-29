@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Theoretical RR Lyrae Lightcurve</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script>
+      window.MathJax = {
+        loader: {
+          load: ["[tex]/html"],
+        },
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"]],
+          packages: { "[+]": ["html"] },
+          macros: {
+            cpb: ["\\class{mjx-symbol-blazhko-period}{#1}", 1],
+            camp: ["\\class{mjx-symbol-blazhko-amp}{#1}", 1],
+            cphase: ["\\class{mjx-symbol-blazhko-phase}{#1}", 1],
+            cmean: ["\\class{mjx-symbol-blazhko-mean}{#1}", 1],
+            coffset: ["\\class{mjx-symbol-blazhko-offset}{#1}", 1],
+            corb: ["\\class{mjx-symbol-orb-period}{#1}", 1],
+            cperi: ["\\class{mjx-symbol-periastron}{#1}", 1],
+            cecc: ["\\class{mjx-symbol-eccentricity}{#1}", 1],
+            comega: ["\\class{mjx-symbol-omega}{#1}", 1],
+            casini: ["\\class{mjx-symbol-asini}{#1}", 1],
+            eqlabel: ["\\class{mjx-equation-label}{\\text{#1:}}", 1],
+          },
+        },
+        chtml: {
+          scale: 0.94,
+        },
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script src="./data/theoretical_lightcurve.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="side-menu" aria-label="Model controls">
+        <div class="brand">
+          <span class="brand-mark"></span>
+          <div>
+            <h1>Blazhko + LTTE</h1>
+            <p id="sourceLabel">Loading light curve</p>
+          </div>
+        </div>
+
+        <section class="control-group observation-controls">
+          <fieldset>
+            <legend>Observed sample</legend>
+            <div class="slider-stack">
+              <label>
+                <span>Baseline <output id="obsBaselineValue"></output></span>
+                <input type="range" id="obsBaseline" min="1" max="10957.5" step="1" value="3652.5" />
+              </label>
+              <label>
+                <span>Observations <output id="obsCountValue"></output></span>
+                <input type="range" id="obsCount" min="100" max="2000" step="1" value="500" />
+              </label>
+              <label>
+                <span>Day/night duty <output id="dutyCycleValue"></output></span>
+                <input type="range" id="dutyCycle" min="0" max="1" step="0.01" value="1" />
+              </label>
+              <label>
+                <span>Mag uncertainty <output id="magUncertaintyValue"></output></span>
+                <input type="range" id="magUncertainty" min="0.001" max="0.08" step="0.001" value="0.01" />
+              </label>
+            </div>
+          </fieldset>
+        </section>
+
+        <section class="control-group add-effects" aria-label="Add model effects">
+          <button type="button" id="addBlazhko">Add Blazhko Period</button>
+          <button type="button" id="addBinary">Add Binary Companion</button>
+        </section>
+
+        <section class="control-group effect-group is-hidden" id="b1Group">
+          <div class="effect-heading">
+            <label class="check-row">
+              <input type="checkbox" id="includeB1" checked />
+              <span>Blazhko period 1</span>
+            </label>
+            <button type="button" class="reset-effect" id="resetB1">Reset</button>
+          </div>
+          <div class="slider-stack" id="b1Controls">
+            <label>
+              <span class="slider-label"><span class="parameter-name">Period <span class="param-symbol symbol-blazhko-period">P<sub>B,j</sub></span></span><output id="b1PeriodValue"></output></span>
+              <input type="range" id="b1Period" min="5" max="90" step="0.01" />
+            </label>
+            <label>
+              <span class="slider-label"><span class="parameter-name">Amplitude modulation <span class="param-symbol symbol-blazhko-amp">a<sub>j</sub></span></span><output id="b1AmpValue"></output></span>
+              <input type="range" id="b1Amp" min="0" max="0.65" step="0.001" />
+            </label>
+            <label>
+              <span class="slider-label"><span class="parameter-name">Phase modulation <span class="param-symbol symbol-blazhko-phase">d&phi;<sub>j</sub></span></span><output id="b1PhaseShiftValue"></output></span>
+              <input type="range" id="b1PhaseShift" min="0" max="0.08" step="0.0005" />
+            </label>
+            <label>
+              <span class="slider-label"><span class="parameter-name">Mean-light amplitude <span class="param-symbol symbol-blazhko-mean">dM<sub>j</sub></span></span><output id="b1MeanValue"></output></span>
+              <input type="range" id="b1Mean" min="0" max="0.04" step="0.0005" />
+            </label>
+            <label>
+              <span class="slider-label"><span class="parameter-name">Modulation phase <span class="param-symbol symbol-blazhko-offset">&psi;<sub>0,j</sub></span></span><output id="b1PhaseOffsetValue"></output></span>
+              <input type="range" id="b1PhaseOffset" min="0" max="1" step="0.001" />
+            </label>
+          </div>
+        </section>
+
+        <section class="control-group effect-group is-hidden" id="b2Group">
+          <div class="effect-heading">
+            <label class="check-row">
+              <input type="checkbox" id="includeB2" checked />
+              <span>Blazhko period 2</span>
+            </label>
+            <button type="button" class="reset-effect" id="resetB2">Reset</button>
+          </div>
+          <div class="slider-stack" id="b2Controls">
+            <label>
+              <span class="slider-label"><span class="parameter-name">Period <span class="param-symbol symbol-blazhko-period">P<sub>B,j</sub></span></span><output id="b2PeriodValue"></output></span>
+              <input type="range" id="b2Period" min="5" max="120" step="0.01" />
+            </label>
+            <label>
+              <span class="slider-label"><span class="parameter-name">Amplitude modulation <span class="param-symbol symbol-blazhko-amp">a<sub>j</sub></span></span><output id="b2AmpValue"></output></span>
+              <input type="range" id="b2Amp" min="0" max="0.65" step="0.001" />
+            </label>
+            <label>
+              <span class="slider-label"><span class="parameter-name">Phase modulation <span class="param-symbol symbol-blazhko-phase">d&phi;<sub>j</sub></span></span><output id="b2PhaseShiftValue"></output></span>
+              <input type="range" id="b2PhaseShift" min="0" max="0.08" step="0.0005" />
+            </label>
+            <label>
+              <span class="slider-label"><span class="parameter-name">Mean-light amplitude <span class="param-symbol symbol-blazhko-mean">dM<sub>j</sub></span></span><output id="b2MeanValue"></output></span>
+              <input type="range" id="b2Mean" min="0" max="0.04" step="0.0005" />
+            </label>
+            <label>
+              <span class="slider-label"><span class="parameter-name">Modulation phase <span class="param-symbol symbol-blazhko-offset">&psi;<sub>0,j</sub></span></span><output id="b2PhaseOffsetValue"></output></span>
+              <input type="range" id="b2PhaseOffset" min="0" max="1" step="0.001" />
+            </label>
+          </div>
+        </section>
+
+        <section class="control-group effect-group is-hidden" id="ltteGroup">
+          <div class="effect-heading">
+            <label class="check-row">
+              <input type="checkbox" id="includeLtte" checked />
+              <span>Binary companion</span>
+            </label>
+            <button type="button" class="reset-effect" id="resetLtte">Reset</button>
+          </div>
+          <div class="slider-stack" id="ltteControls">
+            <label>
+              <span class="slider-label"><span class="parameter-name">Orbital period <span class="param-symbol symbol-orb-period">P<sub>orb</sub></span></span><output id="orbPeriodValue"></output></span>
+              <input type="range" id="orbPeriod" min="365.25" max="5478.75" step="1" />
+            </label>
+            <label>
+              <span class="slider-label"><span class="parameter-name">Periastron phase <span class="param-symbol symbol-periastron">&eta;<sub>peri</sub></span></span><output id="tPeriValue"></output></span>
+              <input type="range" id="tPeri" min="0" max="1" step="0.001" />
+            </label>
+            <label>
+              <span class="slider-label"><span class="parameter-name">Eccentricity <span class="param-symbol symbol-eccentricity">e</span></span><output id="eccValue"></output></span>
+              <input type="range" id="ecc" min="0" max="0.85" step="0.001" />
+            </label>
+            <label>
+              <span class="slider-label"><span class="parameter-name">Argument of periastron <span class="param-symbol symbol-omega">&omega;</span></span><output id="omegaValue"></output></span>
+              <input type="range" id="omega" min="-180" max="180" step="0.1" />
+            </label>
+            <label>
+              <span class="slider-label"><span class="parameter-name">Projected orbit <span class="param-symbol symbol-asini">a sin i</span></span><output id="asiniValue"></output></span>
+              <input type="range" id="asini" min="0" max="5" step="0.001" />
+            </label>
+          </div>
+        </section>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <h2>Theoretical RR Lyrae Lightcurve</h2>
+            <p id="statusLine">Preparing model</p>
+          </div>
+          <div class="action-row">
+            <button type="button" id="playPause">Pause</button>
+            <button type="button" id="resetAnimation">Reset</button>
+          </div>
+        </header>
+
+        <section class="top-grid">
+          <section class="plot-panel">
+            <canvas id="timePlot" aria-label="Animated light curve time window"></canvas>
+          </section>
+
+          <section class="plot-panel observed-panel">
+            <canvas id="observedPlot" aria-label="Phase-folded observed light curve"></canvas>
+          </section>
+        </section>
+
+        <section class="plot-panel stacked-panel" id="blazhkoPanel">
+          <canvas id="blazhkoPlot1" aria-label="Blazhko period one phase-window animation"></canvas>
+          <canvas id="blazhkoPlot2" aria-label="Blazhko period two phase-window animation"></canvas>
+        </section>
+
+        <section class="ltte-grid is-hidden" id="lttePanels">
+          <section class="plot-panel ltte-phase-panel">
+            <canvas id="phasePlot" aria-label="LTTE shifted light curve against pulsation phase"></canvas>
+          </section>
+
+          <section class="plot-panel compact-panel" id="lttePanel">
+            <canvas id="lttePlot" aria-label="LTTE delay curve"></canvas>
+          </section>
+        </section>
+
+        <section class="math-panel" aria-label="Blazhko and light travel time mathematics">
+          <div class="math-grid">
+            <article>
+              <h4>Blazhko modulation</h4>
+              <p>Each Blazhko period modulates the amplitude, phase, and mean light of the light curve.</p>
+              <div class="math-equation">
+                \[
+                \begin{array}{r@{\quad}r@{\;}c@{\;}l}
+                \eqlabel{Pulsation phase} &amp; \phi_0(t) &amp; = &amp; \operatorname{frac}\!\left(\frac{t-\Delta t_{\mathrm{LTT}}}{P_0}\right) \\
+                \eqlabel{Blazhko phase} &amp; \psi_j(t) &amp; = &amp; \operatorname{frac}\!\left(\frac{t-\Delta t_{\mathrm{LTT}}}{\cpb{P_{B,j}}} + \coffset{\psi_{0,j}}\right) \\
+                \eqlabel{Amplitude scale} &amp; A(t) &amp; = &amp; 1 + \sum_j \camp{a_j} \sin(2\pi\psi_j) \\
+                \eqlabel{Phase shift} &amp; \Delta\phi_B(t) &amp; = &amp; \sum_j \cphase{d\phi_j} \cos(2\pi\psi_j) \\
+                \eqlabel{Mean shift} &amp; \Delta M(t) &amp; = &amp; \sum_j \cmean{dM_j} \sin(2\pi\psi_j) \\
+                \eqlabel{Shifted template} &amp; \widetilde{M}_0(t) &amp; = &amp; M_0\!\left(\phi_0-\Delta\phi_B\right) \\
+                \eqlabel{Magnitude} &amp; M(t) &amp; = &amp; \bar{M} + A(t)\left[\widetilde{M}_0(t)-\bar{M}\right] + \Delta M(t)
+                \end{array}
+                \]
+              </div>
+              <p class="math-attribution">
+                Default parameters fitted from
+                <a href="https://ogledb.astrouw.edu.pl/~ogle/OCVS/getobj.php?s=OGLE-BLG-RRLYR-07497" target="_blank" rel="noopener">OGLE-BLG-RRLYR-07497</a>.
+              </p>
+            </article>
+
+            <article>
+              <h4>Light travel time effect</h4>
+              <p>The binary companion shifts the apparent pulsation phase by the line-of-sight orbital delay.</p>
+              <div class="math-equation">
+                \[
+                \begin{array}{r@{\quad}r@{\;}c@{\;}l}
+                \eqlabel{Periastron epoch} &amp; T_{\mathrm{peri}} &amp; = &amp; T_{\mathrm{ref}} + \cperi{\eta_{\mathrm{peri}}}\,\corb{P_{\mathrm{orb}}} \\
+                \eqlabel{Mean anomaly} &amp; \mathcal{M} &amp; = &amp; \frac{2\pi(t-T_{\mathrm{peri}})}{\corb{P_{\mathrm{orb}}}} \\
+                \eqlabel{Kepler equation} &amp; E - \cecc{e}\sin E &amp; = &amp; \mathcal{M} \\
+                \eqlabel{Orbit coordinate} &amp; y_E &amp; = &amp; \sqrt{1-\cecc{e}^{2}}\sin E \\
+                \eqlabel{Orbit coordinate} &amp; x_E &amp; = &amp; \cos E-\cecc{e} \\
+                \eqlabel{True anomaly} &amp; \nu &amp; = &amp; \operatorname{atan2}\!\left(y_E,\;x_E\right) \\
+                \eqlabel{Time delay} &amp; \Delta t_{\mathrm{LTT}} &amp; = &amp; \frac{\casini{a\sin i}}{c}\,
+                \frac{(1-\cecc{e}^2)\sin(\nu+\comega{\omega})}{1+\cecc{e}\cos\nu} \\
+                \eqlabel{Observed phase} &amp; \phi_{\mathrm{obs}}(t) &amp; = &amp; \operatorname{frac}\!\left(\frac{t-\Delta t_{\mathrm{LTT}}}{P_0}\right)
+                \end{array}
+                \]
+              </div>
+              <p class="math-attribution">
+                Default orbital parameters fitted from
+                <a href="https://ogledb.astrouw.edu.pl/~ogle/OCVS/getobj.php?s=OGLE-BLG-RRLYR-06498" target="_blank" rel="noopener">OGLE-BLG-RRLYR-06498</a>.
+              </p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
