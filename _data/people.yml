@@ -12,6 +12,7 @@ eb:
     image: /img/people/eb.png
     role: postdoc
     bio: YCAA Fellow
+    webpage: "https://debraheem.github.io/"
 
 pratik:
     display_name: "Pratik Gandhi"
