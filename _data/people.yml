@@ -27,13 +27,6 @@ sifan:
     image: /img/people/sifan.png
     webpage: "https://sifanexisted.github.io"
 
-chris:
-    display_name: "Christopher Lindsay"
-    bio: Postdoc, Yale Astronomy
-    image: /img/people/chris.jpg
-    role: postdoc
-    webpage: "https://christopher-lindsay.github.io/"
-
 lynn:
     display_name: "Lynn Buchele"
     bio: Ph.D., 2025. Now a postdoc at ISTA
@@ -88,6 +81,13 @@ julia:
     role: ugrad-alum
     bio: B.Sc., 2025
     image: /img/people/julia.jpg
+
+chris:
+    display_name: "Christopher Lindsay"
+    bio: Ph.D., Yale Astronomy
+    image: /img/people/chris.jpg
+    role: grad
+    webpage: "https://christopher-lindsay.github.io/"
 
 kyra:
     display_name: "Kyra Bettwy"
