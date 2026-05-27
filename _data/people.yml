@@ -27,6 +27,13 @@ sifan:
     image: /img/people/sifan.png
     webpage: "https://sifanexisted.github.io"
 
+chris:
+    display_name: "Christopher Lindsay"
+    bio: Postdoc, Yale Astronomy
+    image: /img/people/chris.jpg
+    role: postdoc
+    webpage: "https://christopher-lindsay.github.io/"
+
 lynn:
     display_name: "Lynn Buchele"
     bio: Ph.D., 2025. Now a postdoc at ISTA
@@ -51,13 +58,6 @@ naomi:
     image: /img/people/naomi.png
     role: grad
     webpage: "https://ngluck.github.io"
-
-chris:
-    display_name: "Christopher Lindsay"
-    bio: Ph.D. Candidate, Yale Astronomy
-    image: /img/people/chris.jpg
-    role: grad
-    webpage: "https://christopher-lindsay.github.io/"
 
 irmak:
     display_name: "Irmak Akdoğan"
@@ -158,3 +158,10 @@ ramisa:
     role: grad
     image: /img/people/ramisa.png
     webpage: "https://ramistarblob.github.io/"
+
+ramisa:
+    display_name: "Noah Downing"
+    bio: Ph.D. Student, Yale Astronomy
+    role: grad
+    image: /img/people/noah.png
+    webpage: "https://noahjdowning.github.io/"
