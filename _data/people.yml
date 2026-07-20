@@ -65,6 +65,13 @@ andres:
     bio: Third Year, Yale Physics
     image: /img/people/andres.jpg
 
+arshia:
+    display_name: "Arshia Akhtarkavan"
+    role: ugrad
+    bio: Hoffleit Research Scholar
+    image: /img/people/arshia.jpg
+    webpage: "https://aakavan.github.io/"
+
 maria:
     display_name: "Maria Korolik"
     role: ugrad-alum
@@ -85,9 +92,9 @@ julia:
 
 chris:
     display_name: "Christopher Lindsay"
-    bio: Ph.D., Yale Astronomy
+    bio: Ph.D., 2026. Now an NSF Fellow at UF
     image: /img/people/chris.jpg
-    role: postdoc
+    role: alum-grad
     webpage: "https://christopher-lindsay.github.io/"
 
 kyra:
