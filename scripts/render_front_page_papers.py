@@ -761,7 +761,7 @@ def render_publication_search_tags_include(root: Path, entries: list[BibEntry] |
         lines.append("</div>")
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
+    output_path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8", newline="\n")
     return output_path
 
 
@@ -772,7 +772,7 @@ def render_publication_topics_data(root: Path, entries: list[BibEntry] | None = 
 
     lines = [f"- {json.dumps(label)}" for _normalized, label, _count in topic_summaries]
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
+    output_path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8", newline="\n")
     return output_path
 
 
@@ -793,7 +793,7 @@ def render_publication_count_include(root: Path) -> Path:
     output_path = root / "_includes" / "publication-count.html"
     count = len(load_bib_entries(root))
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(f"{count}\n", encoding="utf-8")
+    output_path.write_text(f"{count}\n", encoding="utf-8", newline="\n")
     return output_path
 
 
@@ -849,7 +849,7 @@ def render_front_page_papers_include(root: Path, limit: int) -> Path:
     lines.append("</ul>")
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
     return output_path
 
 
@@ -934,7 +934,7 @@ def render_publications_include(root: Path) -> Path:
     lines.extend(["</tbody>", "</table>", ""])
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text("\n".join(lines), encoding="utf-8")
+    output_path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
     return output_path
 
 
