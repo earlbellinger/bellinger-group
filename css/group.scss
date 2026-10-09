@@ -499,14 +499,14 @@ body .header .nav-pills .nav-link:not(.active):hover {
     color: inherit;
 }
 
-.spotlight-card .research-topic-link {
+.spotlight-card p:not(.spotlight-label) a {
     text-decoration: underline;
     text-decoration-color: var(--gold);
     text-decoration-thickness: 0.1em;
 }
 
-.spotlight-card .research-topic-link:hover,
-.spotlight-card .research-topic-link:focus-visible {
+.spotlight-card p:not(.spotlight-label) a:hover,
+.spotlight-card p:not(.spotlight-label) a:focus-visible {
     text-decoration-color: currentColor;
 }
 
