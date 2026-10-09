@@ -1127,6 +1127,18 @@ ul.news {
     box-shadow: none;
 }
 
+.role.alum-all {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem 1rem;
+    align-items: start;
+}
+
+.role.alum-all > .person {
+    min-width: 0;
+    margin-bottom: 0;
+}
+
 .person {
     margin-bottom: 0.75rem;
     padding: 0;
@@ -1363,9 +1375,12 @@ a > .fa {
 @media (min-width: 768px) {
     .role.grad,
     .role.ugrad,
-    .role.alum-grad,
-    .role.alum-all {
+    .role.alum-grad {
         column-count: 2;
+    }
+
+    .role.alum-all {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .project-people {
@@ -1510,6 +1525,6 @@ a > .fa {
 
 @media (min-width: 1200px) {
     .role.alum-all {
-        column-count: 3;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
