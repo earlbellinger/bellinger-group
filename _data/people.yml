@@ -28,6 +28,13 @@ sifan:
     image: /img/people/sifan.png
     webpage: "https://sifanexisted.github.io"
 
+nicolas:
+    display_name: "Nicolas Esser"
+    role: postdoc
+    bio: Fulbright Fellow
+    image: /img/people/nicolas.jpg
+    webpage: "https://nicolasesser.github.io/"
+
 lynn:
     display_name: "Lynn Buchele"
     bio: Ph.D., 2025. Now a postdoc at ISTA
@@ -45,6 +52,7 @@ thiago:
     bio: Ph.D. Candidate, Yale Astronomy
     role: grad
     image: /img/people/thiago.png
+    webpage: "https://thiagofst.github.io/"
 
 naomi:
     display_name: "Naomi Gluck"
@@ -67,7 +75,7 @@ andres:
 
 arshia:
     display_name: "Arshia Akhtarkavan"
-    role: ugrad
+    role: ugrad-alum
     bio: Hoffleit Research Scholar
     image: /img/people/arshia.jpg
     webpage: "https://aakavan.github.io/"
