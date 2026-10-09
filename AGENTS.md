@@ -104,6 +104,8 @@ After confirming the checkout is clean and on `master`, deploy:
 - The text search is full-text search over normalized publication metadata.
 - The search index includes the BibTeX key, entry type, title, author list, venue fields, `keywords`, `topics`, `site_tags`, `note`, `abstract`, year, and month.
 - This means typing into the search box can match either standard BibTeX metadata or curated topic tags.
+- Link to a filtered publication list with `{{ site.base }}/publications.html?tag=population%20III`, using a URL-encoded topic from `_data/publication-topics.yml`. Research links should use ordinary anchors so opening in a new tab also works.
+- An explicit `tag` or `q` URL parameter replaces the saved search. Repeated `tag` parameters require all selected topics; `q` supplies optional free text. Search controls keep these parameters in sync while preserving the page hash and unrelated parameters.
 
 ### Curated topic tags
 

@@ -59,6 +59,40 @@
         }
     }
 
+    function loadUrlState() {
+        var params = new URLSearchParams(window.location.search);
+
+        if (!params.has("tag") && !params.has("q")) {
+            return null;
+        }
+
+        return sanitizeState({
+            query: params.get("q") || "",
+            selectedTags: params.getAll("tag")
+        });
+    }
+
+    function saveUrlState(state) {
+        var url = new URL(window.location.href);
+        url.searchParams.delete("q");
+        url.searchParams.delete("tag");
+
+        if (state.query) {
+            url.searchParams.set("q", state.query);
+        }
+        state.selectedTags.forEach(function (tag) {
+            url.searchParams.append("tag", tag);
+        });
+
+        if (url.href !== window.location.href) {
+            try {
+                window.history.replaceState(window.history.state, "", url.href);
+            } catch (error) {
+                // Filtering still works when browser history updates are restricted.
+            }
+        }
+    }
+
     function initializePublicationSearch(container, sharedStore) {
         var input = container.querySelector("[data-search-input]");
         var results = container.querySelector("[data-search-results]");
@@ -371,7 +405,8 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        var sharedState = loadStoredState();
+        // An explicit topic link replaces any search left over from an earlier visit.
+        var sharedState = loadUrlState() || loadStoredState();
         var instances = [];
         var sharedStore = {
             getState: function () {
@@ -380,6 +415,7 @@
             setState: function (nextState, source) {
                 sharedState = sanitizeState(nextState);
                 saveStoredState(sharedState);
+                saveUrlState(sharedState);
 
                 instances.forEach(function (instance) {
                     if (instance && instance !== source) {
@@ -394,5 +430,12 @@
                 return initializePublicationSearch(container, sharedStore);
             })
             .filter(Boolean);
+
+        if (instances.length) {
+            sharedStore.setState(sharedState);
+            window.addEventListener("popstate", function () {
+                sharedStore.setState(loadUrlState() || {});
+            });
+        }
     });
 })();

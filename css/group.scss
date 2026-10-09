@@ -499,6 +499,17 @@ body .header .nav-pills .nav-link:not(.active):hover {
     color: inherit;
 }
 
+.spotlight-card .research-topic-link {
+    text-decoration: underline;
+    text-decoration-color: var(--gold);
+    text-decoration-thickness: 0.1em;
+}
+
+.spotlight-card .research-topic-link:hover,
+.spotlight-card .research-topic-link:focus-visible {
+    text-decoration-color: currentColor;
+}
+
 .spotlight-card h2 {
     margin: 0 0 0.75rem;
     font-size: clamp(1.9rem, 4vw, 2.8rem);
