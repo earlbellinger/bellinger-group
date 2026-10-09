@@ -64,6 +64,7 @@
 
             updateNav(resolvedPanelId);
             panelRoot.setAttribute("data-active-panel", resolvedPanelId);
+            document.dispatchEvent(new CustomEvent("panelchange"));
 
             if (anchorId && homeAnchors[anchorId]) {
                 window.requestAnimationFrame(function () {
@@ -99,11 +100,29 @@
             showPanel(defaultPanel, options);
         }
 
+        function navigateTo(target) {
+            var url = new URL(window.location.href);
+            url.hash = target;
+
+            // Carry a preview search into Papers, but clear it when leaving publications.
+            if (target !== "Papers" && target !== "papers") {
+                url.searchParams.delete("tag");
+                url.searchParams.delete("q");
+            }
+
+            if (url.href !== window.location.href) {
+                // Push the clean destination without changing the previous filtered URL.
+                window.history.pushState(null, "", url.href);
+            }
+            activateFromHash();
+        }
+
         document.addEventListener("click", function (event) {
             var link = event.target.closest("[data-nav-target], [data-panel-link], [data-home-anchor]");
             var target;
 
-            if (!link) {
+            if (!link || event.defaultPrevented || event.button !== 0 ||
+                event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
                 return;
             }
 
@@ -116,12 +135,7 @@
 
                 event.preventDefault();
 
-                if (getPanelIdFromHash() === target) {
-                    showPanel(defaultPanel, { anchorId: target });
-                    return;
-                }
-
-                window.location.hash = target;
+                navigateTo(target);
                 return;
             }
 
@@ -136,14 +150,13 @@
 
             event.preventDefault();
 
-            if (getPanelIdFromHash() === target) {
-                showPanel(target);
-                return;
-            }
-
-            window.location.hash = target;
+            navigateTo(target);
         });
 
+        // History traversal can change both the query and hash without a hashchange event.
+        window.addEventListener("popstate", function () {
+            activateFromHash();
+        });
         window.addEventListener("hashchange", function () {
             activateFromHash();
         });

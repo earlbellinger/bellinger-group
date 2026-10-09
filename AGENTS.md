@@ -105,7 +105,8 @@ After confirming the checkout is clean and on `master`, deploy:
 - The search index includes the BibTeX key, entry type, title, author list, venue fields, `keywords`, `topics`, `site_tags`, `note`, `abstract`, year, and month.
 - This means typing into the search box can match either standard BibTeX metadata or curated topic tags.
 - Link to a filtered publication list with `{{ site.base }}/publications.html?tag=population%20III`, using a URL-encoded topic from `_data/publication-topics.yml`. Research links should use ordinary anchors so opening in a new tab also works.
-- An explicit `tag` or `q` URL parameter replaces the saved search. Repeated `tag` parameters require all selected topics; `q` supplies optional free text. Search controls keep these parameters in sync while preserving the page hash and unrelated parameters.
+- Publication filters are stored in the URL only: repeated `tag` parameters require all selected topics, and `q` supplies optional free text. A URL without these parameters starts unfiltered. Search controls keep these parameters in sync while preserving the page hash and unrelated parameters.
+- Navigating to Home or another non-publication section clears the search and tags. Opening the full Papers panel from the homepage preview carries its search forward. Browser Back/Forward and reloading restore the filters in the destination URL.
 
 ### Curated topic tags
 

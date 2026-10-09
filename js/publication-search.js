@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    var STORAGE_KEY = "bellinger-publication-search-state";
-
     function toArray(list) {
         return Array.prototype.slice.call(list || []);
     }
@@ -43,28 +41,8 @@
         };
     }
 
-    function loadStoredState() {
-        try {
-            return sanitizeState(JSON.parse(window.sessionStorage.getItem(STORAGE_KEY) || "{}"));
-        } catch (error) {
-            return sanitizeState({});
-        }
-    }
-
-    function saveStoredState(state) {
-        try {
-            window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(sanitizeState(state)));
-        } catch (error) {
-            // Ignore storage failures so search still works in restricted browsers.
-        }
-    }
-
     function loadUrlState() {
         var params = new URLSearchParams(window.location.search);
-
-        if (!params.has("tag") && !params.has("q")) {
-            return null;
-        }
 
         return sanitizeState({
             query: params.get("q") || "",
@@ -405,8 +383,8 @@
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-        // An explicit topic link replaces any search left over from an earlier visit.
-        var sharedState = loadUrlState() || loadStoredState();
+        // Keep filters with their URL so clean page visits start unfiltered.
+        var sharedState = loadUrlState();
         var instances = [];
         var sharedStore = {
             getState: function () {
@@ -414,7 +392,6 @@
             },
             setState: function (nextState, source) {
                 sharedState = sanitizeState(nextState);
-                saveStoredState(sharedState);
                 saveUrlState(sharedState);
 
                 instances.forEach(function (instance) {
@@ -433,9 +410,11 @@
 
         if (instances.length) {
             sharedStore.setState(sharedState);
-            window.addEventListener("popstate", function () {
-                sharedStore.setState(loadUrlState() || {});
-            });
+            function syncFromUrl() {
+                sharedStore.setState(loadUrlState());
+            }
+            window.addEventListener("popstate", syncFromUrl);
+            document.addEventListener("panelchange", syncFromUrl);
         }
     });
 })();
