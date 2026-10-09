@@ -46,6 +46,53 @@
 - If the change is about styling or interactivity, edit `css/` or `js/`.
 - If a visible publication artifact looks wrong, fix the source or generator instead of patching the generated HTML directly.
 
+## Push and Deploy
+
+- After every completed change, including content, styling, code, and documentation, commit, push, and deploy the site unless the user explicitly asks otherwise. Deployment is part of completing the task; no additional confirmation is needed.
+- The published branch is `master` on `origin` (`https://github.com/earlbellinger/bellinger-group.git`). Pushing to GitHub alone does not deploy the site.
+- The live site is `https://www.astro.yale.edu/bellinger/`.
+
+### Validate and push
+
+1. Review `git status --short` and the diff. Preserve unrelated work and stage only files belonging to the change.
+2. Run `git diff --check` and checks appropriate to the change. For site changes, build locally with the command below and inspect the affected pages; check desktop and mobile layouts for visual changes. The local builder recreates this repository's generated `_site/` directory.
+
+   ```powershell
+   & 'C:\Program Files\Python311\python.exe' scripts\build_site.py
+   ```
+
+3. Regenerate publication artifacts when required by the publication instructions below. Include relevant tracked generated changes in the commit; never stage `_site/`.
+4. After staging the intended files, commit with a descriptive message and push to `origin master`. Stop and resolve any failed check or Git command before deploying.
+
+   ```powershell
+   git commit -m "Describe the change"
+   git push origin master
+   ```
+
+### Deploy through the Yale server
+
+- SSH host: `voltron.stdusr.yale.internal`, user `epb37`.
+- Server checkout: `/home/epb37/bellinger/bellinger-group`.
+- Deployment script: `/home/epb37/bellinger/sync.sh`. Run it from `/home/epb37/bellinger` because it uses relative paths.
+- Before deployment, check that the server checkout is on `master` with no uncommitted changes. Preserve any unexpected server work and resolve it before continuing.
+- The Windows SSH executable is `C:\Program Files\Git\usr\bin\ssh.exe`. Use `-o RemoteCommand=none` to override the saved interactive SSH command, `-x` to disable X11 forwarding, and batch mode to avoid hanging on password prompts.
+
+```powershell
+& 'C:\Program Files\Git\usr\bin\ssh.exe' -x -o BatchMode=yes -o ConnectTimeout=15 -o RemoteCommand=none epb37@voltron.stdusr.yale.internal 'git -C /home/epb37/bellinger/bellinger-group status --short; git -C /home/epb37/bellinger/bellinger-group branch --show-current'
+```
+
+After confirming the checkout is clean and on `master`, deploy:
+
+```powershell
+& 'C:\Program Files\Git\usr\bin\ssh.exe' -x -o BatchMode=yes -o ConnectTimeout=15 -o RemoteCommand=none epb37@voltron.stdusr.yale.internal 'cd /home/epb37/bellinger && bash -e sync.sh'
+```
+
+- The script pulls the repository, builds with `make`/Jekyll, commits and pushes any resulting tracked changes, and syncs the built site to `new-astro-web.stdusr.yale.internal:/var/www/html/bellinger`. `bash -e` stops the deployment if a command fails.
+- Use this script for deployment. The local `make deploy` target still has placeholder host/path settings, and the local Python preview build does not include all the separate `meetings/` and `apps/` assets that the server's Jekyll build deploys.
+- Wait for the script to finish successfully, then verify the affected live pages and assets. For documentation-only changes, confirm the server checkout has the commit and the live site responds successfully.
+- If the script creates and pushes a new commit, fetch and fast-forward the local checkout after confirming it is clean.
+- If SSH or deployment is unavailable, report the specific blocker and whether the changes were pushed. Yale network/VPN access may be required; do not claim deployment succeeded without verification.
+
 ## Publication BibTeX and Tags
 
 - The source of truth for publications is `bib/pubs.bib`.
