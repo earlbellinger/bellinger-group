@@ -221,7 +221,7 @@ body .header .nav-pills .nav-link:not(.active):hover {
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.95fr);
     gap: 2rem;
-    align-items: center;
+    align-items: start;
     padding: clamp(1.5rem, 4vw, 3rem);
     margin-bottom: 1.5rem;
     background:
@@ -345,13 +345,16 @@ body .header .nav-pills .nav-link:not(.active):hover {
 
 .hero-metrics {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.9rem;
-    margin-top: 1.8rem;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
 }
 
 .metric-card {
-    padding: 1rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.8rem 0.9rem;
     background: rgba(255, 255, 255, 0.62);
     border: 1px solid rgba(255, 255, 255, 0.72);
     border-radius: 22px;
@@ -360,6 +363,7 @@ body .header .nav-pills .nav-link:not(.active):hover {
 
 .metric-value {
     display: block;
+    flex: 0 0 auto;
     font-family: "Newsreader", Georgia, serif;
     font-size: clamp(1.8rem, 3vw, 2.3rem);
     line-height: 1;
@@ -368,7 +372,7 @@ body .header .nav-pills .nav-link:not(.active):hover {
 
 .metric-label {
     display: block;
-    margin-top: 0.45rem;
+    min-width: 0;
     color: var(--ink-soft);
     font-size: 0.88rem;
     line-height: 1.45;
@@ -395,7 +399,7 @@ body .header .nav-pills .nav-link:not(.active):hover {
     position: relative;
     display: grid;
     place-items: center;
-    width: unquote("min(100%, 470px)");
+    width: unquote("min(100%, 300px)");
     aspect-ratio: 1 / 1;
 }
 
@@ -1407,10 +1411,6 @@ a > .fa {
         max-width: none;
     }
 
-    .hero-metrics {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
     .section-intro {
         flex-direction: column;
         align-items: flex-start;
@@ -1461,10 +1461,6 @@ a > .fa {
 
     .hero-metrics {
         grid-template-columns: 1fr;
-    }
-
-    .hero-orbit {
-        width: unquote("min(100%, 340px)");
     }
 
     .publication-search-field {
